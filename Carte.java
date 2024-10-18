@@ -43,7 +43,7 @@ public class Carte {
     }
 
     /** Construit la carte à partir d'<b>une copie</b> d'un tableau de cases déjà existant
-     * @param case_tab Tableau de case d'origine
+     * @param case_tab Tableau de cases d'origine
      * @param tailleCases Taille des cases de la carte
     */
     public Carte(Case case_tab[][], int tailleCases) { 
@@ -126,7 +126,7 @@ public class Carte {
         int col_voisin_potentiel = (dir == Direction.OUEST) ? src.get_Colonne() - 1 : (dir == Direction.EST) ? src.get_Colonne() + 1 : src.get_Colonne();
 
         // Et on vérifie que cette case se retrouve bien dans sur la carte, i.e pas de débordement
-        return (lig_voisin_potentiel >= 0) && (lig_voisin_potentiel <= this.cases.length) && (col_voisin_potentiel >= 0) && (col_voisin_potentiel <= this.cases[0].length);
+        return (lig_voisin_potentiel >= 0) && (lig_voisin_potentiel < this.cases.length) && (col_voisin_potentiel >= 0) && (col_voisin_potentiel < this.cases[0].length);
     }
 
     /** @param src Case d'origine 
