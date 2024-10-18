@@ -52,28 +52,33 @@ public abstract class Robot{
         return this.terrainsAcc;
     }
 
-    public int getTempsTrajet(Case trajet[]){
-        for(int i=0 ; i< trajet.length ;i++){
-            trajet[i].
-        }
-
+    
+    // overwrite pour chenille et pattes
+    public int getVitesse(NatureTerrain actu){
+        return vitesse_de_base;
     }
-    //////////////
+    
 
+    public int getTempsTrajet(Case trajet[]){
+        int tmp = 0;
+        for(int i=0 ; i< trajet.length ;i++){
+            tmp  = tmp + this.getVitesse(trajet[i].get_nature())/trajet[i].getTailleCase;
+        }
+        return tmp;
+    }
 
     public boolean isTerrainAccessible(Case coordonnee) {
         NatureTerrain terr[]= this.getTerrainAcc();
         for(int i =0 ; i<terr.length; i++){
             if (terr[i] == coordonnee.get_nature()) {
-                return true;  // Le terrain est accessible
+                return true; 
             }
         }
-        return false;  // Terrain non accessible
+        return false; 
     }
 
     public void setPosition(Case coordonnee) {
         if (isTerrainAccessible(coordonnee)) {
-            // Met à jour la position si le terrain est accessible
             this.position = coordonnee;
         } else {
             System.out.println("Terrain inaccessible pour le Drone.");
@@ -86,8 +91,7 @@ public abstract class Robot{
         }
         else{
             try {
-                // Le robot attend pendant 'temps_decharge' secondes
-                Thread.sleep(this.temps_decharge * 1000);  // Conversion en millisecondes
+                Thread.sleep(this.temps_decharge * 1000);  
             } catch (InterruptedException e) {
                 System.out.println("L'attente a été interrompue.");
                 e.printStackTrace();
@@ -108,21 +112,12 @@ public abstract class Robot{
         }
     }
 
-    public void rechargerReservoir(){
-        if(this.position.get_nature() == NatureTerrain.EAU ){
-            try {
-                // Le robot attend pendant 'temps_decharge' secondes
-                Thread.sleep(this.temps_recharge * 1000);  // Conversion en millisecondes
-            } catch (InterruptedException e) {
-                System.out.println("L'attente a été interrompue.");
-                e.printStackTrace();
-            }
-            this.etat_reservoir = this.capacite_reservoir;
-        }
-        else{
-            //generer un erreur 
-        }
+    public abstract void rechargerReservoir();
+    
+    public void setResrvoir(int vol){
+        this.etat_reservoir = this.capacite_reservoir;
     }
+
 }
 
 

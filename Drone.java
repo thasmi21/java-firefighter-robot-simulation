@@ -4,13 +4,19 @@ public class Drone extends Robot {
         super(150,100,10000,108000,10000,30,etat_reservoir,Position,new NatureTerrain[] {NatureTerrain.TERRAIN_LIBRE, NatureTerrain.ROCHE,NatureTerrain.EAU,NatureTerrain.FORET,NatureTerrain.HABITAT});
     }
 
-    @Override
-    public int deverserEau(int vol){
-        if(this.changeEtatReservoir(vol) == -1){
-            return -1;
+    public void rechargerReservoir(){
+        if(this.getPosition().get_nature() == NatureTerrain.EAU ){
+            try {
+                // Le robot attend pendant 'temps_decharge' secondes
+                Thread.sleep(this.getTempsRecharge() * 1000);  // Conversion en millisecondes
+            } catch (InterruptedException e) {
+                System.out.println("L'attente a été interrompue.");
+                e.printStackTrace();
+            }
+            this.setResrvoir(this.getCapaciteReservoir());
         }
         else{
-            return 0;
+            //generer un erreur 
         }
     }
 }    
