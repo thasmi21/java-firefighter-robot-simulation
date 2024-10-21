@@ -4,15 +4,16 @@ public class Pattes extends Robot{
         super(30, 30, Integer.MAX_VALUE, 0, 10, 1, etat_reservoir, position, new NatureTerrain[] {NatureTerrain.TERRAIN_LIBRE, NatureTerrain.ROCHE, NatureTerrain.FORET, NatureTerrain.HABITAT});
     }
 
-    @Override
-    public int deverser_Eau(int vol){
-        if(this.change_Etat_Reservoir(vol) == -1){
-            return -1;
+    public double getVitesse(NatureTerrain actuelle){
+        switch (actuelle) {
+            case NatureTerrain.ROCHE: 
+                return getVitesseBase()/3;
+            default:
+                return getVitesseBase();
         }
-        else{
-            wait(this.temps_decharge * 1000);
-            setDecrementFeu(vol);
-            return 0;
-        }
+    }
+
+    public void deverserEau()throws RobotIllegalVolException{
+        this.setReservoir(10);
     }
 }

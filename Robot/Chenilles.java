@@ -4,13 +4,17 @@ public class Chenilles extends Robot{
         super(80, 60, 2000, 300, 100, 8, etat_reservoir, position, new NatureTerrain[] {NatureTerrain.TERRAIN_LIBRE, NatureTerrain.FORET, NatureTerrain.HABITAT});
     }
 
-    @Override
-    public int getVitesse(NatureTerrain actuelle){
+
+    public double getVitesse(NatureTerrain actuelle){
         switch (actuelle) {
             case NatureTerrain.FORET: 
                 return getVitesseBase()/2;
             default:
                 return getVitesseBase();
         }
+    }
+
+    public void deverserEau()throws RobotIllegalVolException{
+        this.setReservoir(100);
     }
 }
