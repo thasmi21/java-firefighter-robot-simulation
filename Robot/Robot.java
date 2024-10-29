@@ -1,3 +1,5 @@
+
+
 public abstract class Robot{
     private int vitesse_max;            // vitesse de déplacement max du robot (km/h)
     private int vitesse_de_base ;           // vitesse de déplacement du robot lue dans le fichier (km/h)
@@ -76,7 +78,9 @@ public abstract class Robot{
 
     /////////// autre methodes ///////////
 
-    public boolean isTerrainAccessible(Case coordonnee) {
+    /** methode pour dire si la case coordonnee est accessible au robot
+     * @param coordonnee :case a verifirer */
+    private boolean isTerrainAccessible(Case coordonnee) {
         NatureTerrain terr[]= this.getTerrainAcc();
         for(int i =0 ; i<terr.length; i++){
             if (terr[i] == coordonnee.get_nature()) {
@@ -86,11 +90,14 @@ public abstract class Robot{
         return false; 
     }
 
-    public void setPosition(Case coordonnee) {
+    /** methode pour deplacer le robot sur la case coordonnee
+     * @param coordonnee :case ou deplacer le robot
+     * @exception RobotIllegalPosException Lève une exception RobotIllegalPosException si la case est inaccessible pour le robot */
+    public void setPosition(Case coordonnee)throws RobotIllegalPosException{
         if (isTerrainAccessible(coordonnee)) {
             this.position = coordonnee;
         } else {
-            System.out.println("Terrain inaccessible pour le Drone.");
+            throw new RobotIllegalPosException("la position n'est pas accessible pour le robot\n");
         }
     }
 
@@ -111,6 +118,8 @@ public abstract class Robot{
 
         this.etat_reservoir = etat_reservoir - vol;
     }
+
+    
     //public Chemin calculChemin(case case_finale){}
 }
 
