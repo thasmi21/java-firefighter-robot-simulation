@@ -39,7 +39,7 @@ public class Carte {
 
         for(int lig =  0; lig < case_tab.length; lig++)
             for(int col = 0; col < case_tab[0].length; col++)
-                this.cases[lig][col] = new Case(lig, col, case_tab[lig][col].get_nature());
+                this.cases[lig][col] = new Case(lig, col, case_tab[lig][col].getNature());
     }
 
     /** Construit la carte à partir d'<b>une copie</b> d'un tableau de cases déjà existant
@@ -52,7 +52,7 @@ public class Carte {
 
         for(int lig =  0; lig < case_tab.length; lig++)
             for(int col = 0; col < case_tab[0].length; col++)
-                this.cases[lig][col] = new Case(lig, col, case_tab[lig][col].get_nature());
+                this.cases[lig][col] = new Case(lig, col, case_tab[lig][col].getNature());
     }
 
 
@@ -64,12 +64,12 @@ public class Carte {
     */
     public void setCase(Case c) throws CarteHorsCarteException
     {
-        int lig = c.get_Ligne();
-        int col = c.get_Colonne();
+        int lig = c.getLigne();
+        int col = c.getColonne();
         if(lig > this.cases.length || col > this.cases[0].length)
             throw new CarteHorsCarteException("La case de coordonnées ("+lig+";"+col+") n'existe pas !\n");
 
-        this.cases[lig][col] = new Case(c.get_Ligne(), c.get_Colonne(), c.get_nature());
+        this.cases[lig][col] = new Case(c.getLigne(), c.getColonne(), c.getNature());
     }
 
     /** Permet de d'attribuer à la case d'emplacement (lig,col) (<b>s'il existe</b>) sur la carte une case avec les paramètres spécifiés en argument
@@ -122,8 +122,8 @@ public class Carte {
     */
     public boolean voisinExiste(Case src, Direction dir) {
         // On calcule la position de ce supposé voisin par rapport à la case source et la direction indiquée
-        int lig_voisin_potentiel = (dir == Direction.NORD)  ? src.get_Ligne()   - 1 : (dir == Direction.SUD) ? src.get_Ligne()   + 1 : src.get_Ligne();
-        int col_voisin_potentiel = (dir == Direction.OUEST) ? src.get_Colonne() - 1 : (dir == Direction.EST) ? src.get_Colonne() + 1 : src.get_Colonne();
+        int lig_voisin_potentiel = (dir == Direction.NORD)  ? src.getLigne()   - 1 : (dir == Direction.SUD) ? src.getLigne()   + 1 : src.getLigne();
+        int col_voisin_potentiel = (dir == Direction.OUEST) ? src.getColonne() - 1 : (dir == Direction.EST) ? src.getColonne() + 1 : src.getColonne();
 
         // Et on vérifie que cette case se retrouve bien dans sur la carte, i.e pas de débordement
         return (lig_voisin_potentiel >= 0) && (lig_voisin_potentiel < this.cases.length) && (col_voisin_potentiel >= 0) && (col_voisin_potentiel < this.cases[0].length);
@@ -134,10 +134,10 @@ public class Carte {
      *  @exception CarteHorsCarteException Lève une exception CarteHorsCarteException si la case du voisin n'existe pas sur la carte
     */
     public Case getVoisin(Case src, Direction dir) throws CarteHorsCarteException {
-        if(!this.voisinExiste(src, dir)) throw new CarteHorsCarteException("La case de coordonnées ("+src.get_Ligne()+";"+src.get_Colonne()+") n'a pas de voisin dans la direction "+dir.toString()+" !\n");
+        if(!this.voisinExiste(src, dir)) throw new CarteHorsCarteException("La case de coordonnées ("+src.getLigne()+";"+src.getColonne()+") n'a pas de voisin dans la direction "+dir.toString()+" !\n");
 
-        int lig_voisin = (dir == Direction.NORD)  ? src.get_Ligne()   - 1 : (dir == Direction.SUD) ? src.get_Ligne()   + 1 : src.get_Ligne();
-        int col_voisin = (dir == Direction.OUEST) ? src.get_Colonne() - 1 : (dir == Direction.EST) ? src.get_Colonne() + 1 : src.get_Colonne();
+        int lig_voisin = (dir == Direction.NORD)  ? src.getLigne()   - 1 : (dir == Direction.SUD) ? src.getLigne()   + 1 : src.getLigne();
+        int col_voisin = (dir == Direction.OUEST) ? src.getColonne() - 1 : (dir == Direction.EST) ? src.getColonne() + 1 : src.getColonne();
 
         return this.cases[lig_voisin][col_voisin];
     }
@@ -161,7 +161,7 @@ public class Carte {
                             break;
                         case 1:
                             System.out.print(" ");
-                            switch(this.cases[y][x].get_nature()) {
+                            switch(this.cases[y][x].getNature()) {
                                 case TERRAIN_LIBRE:
                                     System.out.print("TL");
                                     break;

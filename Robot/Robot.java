@@ -1,6 +1,7 @@
 
 
 public abstract class Robot{
+    private String type;
     private int vitesse_max;            // vitesse de déplacement max du robot (km/h)
     private int vitesse_de_base ;           // vitesse de déplacement du robot lue dans le fichier (km/h)
     private int capacite_reservoir;      // capacité max du reservoir (enL)
@@ -13,7 +14,8 @@ public abstract class Robot{
     private NatureTerrain terrainsAcc[];
 
 
-    public Robot(int vitesse_max,int vitesse_de_base, int capacite_reservoir,int temps_recharge,int decrementerReservoir,int temps_decharge,int etat_reservoir,Case position,NatureTerrain terrainsAcc[]){
+    public Robot(String type,int vitesse_max,int vitesse_de_base, int capacite_reservoir,int temps_recharge,int decrementerReservoir,int temps_decharge,int etat_reservoir,Case position,NatureTerrain terrainsAcc[]){
+        this.type = type;
         this.vitesse_max = vitesse_max;
         this.vitesse_de_base = vitesse_de_base;
         this.capacite_reservoir = capacite_reservoir;
@@ -26,6 +28,12 @@ public abstract class Robot{
     }
 
     /////////// getter ///////////
+
+    /** Renvoie la vitesse maximum du robot*/
+    public String getType(){
+        return this.type;
+    }
+
     /** Renvoie la vitesse maximum du robot*/
     public int getVitesseMax(){
         return this.vitesse_max;
@@ -83,7 +91,7 @@ public abstract class Robot{
     private boolean isTerrainAccessible(Case coordonnee) {
         NatureTerrain terr[]= this.getTerrainAcc();
         for(int i =0 ; i<terr.length; i++){
-            if (terr[i] == coordonnee.get_nature()) {
+            if (terr[i] == coordonnee.getNature()) {
                 return true; 
             }
         }

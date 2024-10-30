@@ -9,13 +9,13 @@ public class Case{
         this.nature = nature;
     }
 
-    public int get_Ligne(){
+    public int getLigne(){
         return this.ligne;
     }
-    public int get_Colonne(){
+    public int getColonne(){
         return this.colonne;
     }
-    public NatureTerrain get_nature(){
+    public NatureTerrain getNature(){
         return this.nature;
     }
 }
