@@ -1,0 +1,26 @@
+# Un exemple de carte 8x8, cases de 10000m de cote
+3 3 10000
+
+# l0
+TERRAIN_LIBRE
+TERRAIN_LIBRE
+EAU
+
+# l1
+HABITAT
+TERRAIN_LIBRE
+TERRAIN_LIBRE
+
+# l2
+HABITAT
+EAU
+TERRAIN_LIBRE
+
+# Incendies
+1
+0 0 50000 
+
+	
+# Robots
+1
+0 1 ROUES

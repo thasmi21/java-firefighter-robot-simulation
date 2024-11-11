@@ -18,4 +18,10 @@ public class Case{
     public NatureTerrain getNature(){
         return this.nature;
     }
+
+    @Override
+    public String toString() {
+        return "[col : "  + this.colonne + " lig : " + this.ligne + "]" ;
+    }
+
 }

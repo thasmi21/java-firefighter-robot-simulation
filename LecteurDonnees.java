@@ -10,20 +10,6 @@ import java.util.zip.DataFormatException;
  * Les données sur les cases, robots puis incendies sont lues dans le fichier,
  * puis simplement affichées.
  * A noter: pas de vérification sémantique sur les valeurs numériques lues.
- *
- * IMPORTANT:
- *
- * Cette classe ne fait que LIRE les infos et les afficher.
- * A vous de modifier ou d'ajouter des méthodes, inspirées de celles présentes
- * (ou non), qui CREENT les objets au moment adéquat pour construire une
- * instance de la classe DonneesSimulation à partir d'un fichier.
- *
- * Vous pouvez par exemple ajouter une méthode qui crée et retourne un objet
- * contenant toutes les données lues:
- *    public static DonneesSimulation creeDonnees(String fichierDonnees);
- * Et faire des méthode creeCase(), creeRobot(), ... qui lisent les données,
- * créent les objets adéquats et les ajoutent ds l'instance de
- * DonneesSimulation.
  */
 public class LecteurDonnees {
     /**
@@ -44,9 +30,6 @@ public class LecteurDonnees {
         scanner.close();  // Ferme le scanner après lecture
         return donnees;   // Renvoie l'instance de DonneesSimulation
     }
-
-
-
 
     // Tout le reste de la classe est prive!
 
@@ -87,8 +70,6 @@ public class LecteurDonnees {
             throw new DataFormatException("Format invalide. Attendu: nbLignes nbColonnes tailleCases");
         }
     }
-
-
 
 
     /**
@@ -188,25 +169,25 @@ public class LecteurDonnees {
     
             // lecture éventuelle d'une vitesse du robot (entier)
             String s = scanner.findInLine("(\\d+)");
-            int vitesse;
+            double vitesse;
             
             verifieLigneTerminee();
             Case position = new Case(lig, col, null);
     
             switch (type) {
                 case "DRONE": 
-                    vitesse = (s == null) ? 100 : Integer.parseInt(s);
+                    vitesse = (s == null) ? 100/3.6 : Double.parseDouble(s);
                     return new Drone(vitesse, position);  
     
                 case "PATTES": 
                     return new Pattes(position);   
     
                 case "CHENILLES": 
-                    vitesse = (s == null) ? 60 : Integer.parseInt(s);
+                    vitesse = (s == null) ? 60/3.6 : Double.parseDouble(s);
                     return new Chenilles(vitesse, position);
     
                 case "ROUES": 
-                    vitesse = (s == null) ? 80 : Integer.parseInt(s);
+                    vitesse = (s == null) ? 80/3.6 : Double.parseDouble(s);
                     return new Roues(vitesse, position);
     
                 default: 
@@ -217,9 +198,6 @@ public class LecteurDonnees {
             throw new DataFormatException("Format de robot invalide. Attendu : ligne colonne type [valeur_specifique]");
         }
     }
-
-
-
 
     /** Ignore toute (fin de) ligne commencant par '#' */
     private void ignorerCommentaires() {

@@ -17,6 +17,18 @@ public class DonneesSimulation {
         this.incendies = incendies;
     }
 
+    public Carte getCarte(){
+        return this.carte;
+    }
+
+    public ArrayList<Robot> getRbotos(){
+        return this.robots;
+    }
+
+    public ArrayList<Incendie> getIncendies(){
+        return this.incendies;
+    }
+
     /**
      * Affiche la carte et les éléments de la simulation sur l'interface graphique.
      * @param gui L'interface graphique utilisée pour l'affichage.
@@ -31,7 +43,7 @@ public class DonneesSimulation {
                 Case c = carte.getCase(i, j);
                 String image = obtenirCouleurNature(c.getNature());
 
-                gui.addGraphicalElement(new ImageElement(j * 50 , i * 50,image,50,50,null));
+                gui.addGraphicalElement(new ImageElement(j * 30 , i * 30,image,30,30,null));
                 }
                 catch(CarteHorsCarteException e){
                     System.err.println("erreur depassement création care donneesimulation");
@@ -41,16 +53,16 @@ public class DonneesSimulation {
 
         // Dessin des incendies
         for (Incendie incendie : incendies) {
-            int x = incendie.getPosition().getColonne() * 50 +25 ;
-            int y = incendie.getPosition().getLigne() * 50 +25 ;
+            int x = incendie.getPosition().getColonne() * 30 +15 ;
+            int y = incendie.getPosition().getLigne() * 30 +15 ;
             gui.addGraphicalElement(new Oval(x, y, Color.RED, Color.ORANGE, 20));
             gui.addGraphicalElement(new Text(x, y - 10, Color.BLACK, Integer.toString(incendie.getVol_pour_eteindre())));
         }
 
         // Dessin des robots
         for (Robot robot : robots) {
-            int x = robot.getPosition().getColonne() * 50 +25 ;
-            int y = robot.getPosition().getLigne() * 50 +25;
+            int x = robot.getPosition().getColonne() * 30 +15 ;
+            int y = robot.getPosition().getLigne() * 30 +15;
             gui.addGraphicalElement(new Oval(x, y, Color.BLUE, Color.CYAN, 20));
             gui.addGraphicalElement(new Text(x, y + 10, Color.BLACK, robot.getType()));
         }
