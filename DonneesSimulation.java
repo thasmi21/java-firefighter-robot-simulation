@@ -5,28 +5,53 @@ import gui.Text;
 import gui.Oval;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DonneesSimulation {
     private Carte carte;
     private ArrayList<Robot> robots;
-    private ArrayList<Incendie> incendies;
+    private HashMap<Case, Incendie> incendies;
 
-    public DonneesSimulation(Carte carte, ArrayList<Incendie> incendies, ArrayList<Robot> robots) {
+    public DonneesSimulation(Carte carte, HashMap<Case, Incendie> incendies, ArrayList<Robot> robots) {
         this.carte = carte;
         this.robots = robots;
         this.incendies = incendies;
     }
 
-    public Carte getCarte(){
+    /** Constructeur si on a que la carte 
+     * @param carte Carte à utiliser pour la simulation
+    */
+    public DonneesSimulation(Carte carte) {
+
+    }
+
+    public Carte getCarte() {
         return this.carte;
     }
 
-    public ArrayList<Robot> getRbotos(){
+    public ArrayList<Robot> getRbotos() {
         return this.robots;
     }
 
-    public ArrayList<Incendie> getIncendies(){
+    public HashMap<Case, Incendie> getIncendies() {
         return this.incendies;
+    }
+
+    /** Renvoie l'incendie à la case c (ou null si il n'y a pas d'incendie à cette case) 
+     * @param c case où se trouve potentiellement l'incendie à récupérer
+    */
+    public Incendie getIncendieByCase(Case c) {
+        return this.incendies.get(c);
+    }
+
+    /** Permet de retirer un incendie de la simulation */
+    public void removeIncendieByCase(Case c){
+        this.incendies.remove(c);
+    }
+
+    /** Permet d'ajouter un incendie à la simulation */
+    public void putIncendie(Incendie incendie){
+        this.incendies.put(incendie.getPosition(), incendie);
     }
 
     /**

@@ -20,7 +20,8 @@ public class Incendie {
     /** methode pour deduir la quantité vol de la quantité vol_pour_eteindre
      * @param vol : volume a déduire du vol necessaire pour eteindre le feu*/
     public int setFeuDec(int vol){
-        return this.vol_exctinction - vol;
+        this.vol_exctinction -= vol;
+        return this.vol_exctinction;
     }
 
 }
