@@ -144,60 +144,41 @@ public abstract class Robot{
         this.etat_reservoir = etat_reservoir - vol;
     }
 
-    /*     public Chemin trouverChemin(Carte carte, Case depart, Case cible) {
-        Map<Case, Double> tempsArrivee = new HashMap<>();
-        Map<Case, Case> precedents = new HashMap<>();
-        PriorityQueue<Case> queue = new PriorityQueue<>(Comparator.comparingDouble(tempsArrivee::get));
-        
-        tempsArrivee.put(depart, 0.0);
-        queue.add(depart);
-        
-        while (!queue.isEmpty()) {
-            Case current = queue.poll();
-            System.out.println("Exploring case: " + current);  // Debug
     
-            if (current.equals(cible)) break;
-    
-            // Ajout des voisins avec vérification de null
-            Case[] voisins = new Case[4];
-            try { voisins[0] = carte.getVoisin(current, Direction.NORD); } catch(CarteHorsCarteException e) { voisins[0] = null; }
-            try { voisins[1] = carte.getVoisin(current, Direction.SUD); } catch(CarteHorsCarteException e) { voisins[1] = null; }
-            try { voisins[2] = carte.getVoisin(current, Direction.EST); } catch(CarteHorsCarteException e) { voisins[2] = null; }
-            try { voisins[3] = carte.getVoisin(current, Direction.OUEST); } catch(CarteHorsCarteException e) { voisins[3] = null; }
-    
-            for (Case voisin : voisins) {
-                if (voisin != null) {
-                    double vitesse = this.getVitesse(voisin.getNature());
-                    double tempsDeplacement = carte.getTailleCases()/ vitesse;
-                    double nouveauTemps = tempsArrivee.get(current) + tempsDeplacement;
-    
-                    if (nouveauTemps < tempsArrivee.getOrDefault(voisin, Double.MAX_VALUE)) {
-                        tempsArrivee.put(voisin, nouveauTemps);
-                        precedents.put(voisin, current);
-                        queue.add(voisin);
-                        //System.out.println("Added voisin: " + voisin + " with new time: " + nouveauTemps);  // Debug
-                    }
+    //Plus court Chemin//
+
+    static final double INF = Double.POSITIVE_INFINITY;
+
+    public Chemin dijkstra(Carte carte, Case fin) {
+        double[][] graph = matrice_adj(carte);
+        int source =  this.position.getLigne() * carte.getNbColonnes() + this.position.getColonne();
+        int destination = fin.getLigne() * carte.getNbColonnes() + fin.getColonne();
+        int n = graph.length;
+        double[] distance = new double[n];
+        boolean[] visited = new boolean[n];
+        int[] previous = new int[n];  // Pour garder une trace du chemin
+
+        Arrays.fill(distance, INF);
+        Arrays.fill(previous, -1);
+        distance[source] = 0;
+
+        for (int count = 0; count < n - 1; count++) {
+            int u = minDistance(distance, visited);
+            if (u == -1) break; // Aucun nœud accessible restant
+            visited[u] = true;
+
+            for (int v = 0; v < n; v++) {
+                if (!visited[v] && graph[u][v] != INF && distance[u] != INF &&
+                        distance[u] + graph[u][v] < distance[v]) {
+                    distance[v] = distance[u] + graph[u][v];
+                    previous[v] = u;  // Enregistrer le prédécesseur pour le chemin
                 }
             }
         }
-    
-    
-        // Reconstruction du chemin
-        ArrayList<Case> route = new ArrayList<>();
-        Case at = cible;int
-        //System.out.println(precedents.keySet());
-        while(at !=  null){
-            route.add(at);
-            System.out.println("Reconstructing path: added case " + at);  // Debug
-            at = precedents.get(at);
-        }
-        Collections.reverse(route);
-    
-        Chemin chemin = new Chemin(route, null, route.size(), tempsArrivee.getOrDefault(cible, -1.0).intValue());
+        Chemin chemin = makechemin(carte,buildPath(previous, source, destination),graph);
         return chemin;
-    }*/
-
-    public double[][] matrice_adj(Carte carte,Robot robot){
+    }
+    private double[][] matrice_adj(Carte carte){
         int col= carte.getNbColonnes();
         int lig = carte.getNbLignes();
         double[][] graph = new double[col*lig][col*lig];
@@ -222,61 +203,19 @@ public abstract class Robot{
                 for (int p = 0; p < 4; p++) { 
                     if (voisins[p] != null) {
                         int neighborIndex = voisins[p].getLigne() * col + voisins[p].getColonne();
-                        double vitesse1 = robot.getVitesse(voisins[p].getNature());
-                        double vitesse2 = robot.getVitesse(current.getNature());
+                        double vitesse1 = this.getVitesse(voisins[p].getNature());
+                        double vitesse2 = this.getVitesse(current.getNature());
                         double tempsDeplacement = (carte.getTailleCases()/(2*vitesse1)) + (carte.getTailleCases()/(2*vitesse2));
                         graph[nodeIndex][neighborIndex] = tempsDeplacement;
                         graph[neighborIndex][nodeIndex] = tempsDeplacement;
                     }
                 }
 
-            } catch (CarteHorsCarteException e) {
-                // Ignorer les cases hors de la carte
-            }
+            } catch (CarteHorsCarteException e) {}
         }
+    
     }
-
-    // Afficher la matrice d'adjacence
-    System.out.println("Matrice d'adjacence :");
-    for (int i = 0; i < col * lig; i++) {
-        System.out.print("[");
-        for (int k = 0; k < col * lig; k++) {
-            System.out.printf("%8.2f", graph[i][k]);
-        }
-        System.out.println("]");
-    }
-
     return graph;
-    }
-
-    static final double INF = Double.POSITIVE_INFINITY;
-
-    public double dijkstra(double[][] graph, int source, int destination) {
-        int n = graph.length;
-        double[] distance = new double[n];
-        boolean[] visited = new boolean[n];
-        int[] previous = new int[n];  // Pour garder une trace du chemin
-
-        Arrays.fill(distance, INF);
-        Arrays.fill(previous, -1);
-        distance[source] = 0;
-
-        for (int count = 0; count < n - 1; count++) {
-            int u = minDistance(distance, visited);
-            if (u == -1) break; // Aucun nœud accessible restant
-            visited[u] = true;
-
-            for (int v = 0; v < n; v++) {
-                if (!visited[v] && graph[u][v] != INF && distance[u] != INF &&
-                        distance[u] + graph[u][v] < distance[v]) {
-                    distance[v] = distance[u] + graph[u][v];
-                    previous[v] = u;  // Enregistrer le prédécesseur pour le chemin
-                }
-            }
-        }
-
-        printPath(previous, source, destination);
-        return distance[destination];
     }
 
     private static int minDistance(double[] distance, boolean[] visited) {
@@ -291,17 +230,55 @@ public abstract class Robot{
         return minIndex;
     }
 
-    private static void printPath(int[] previous, int source, int destination) {
-        if (destination == source) {
-            System.out.print(source + " ");
-            return;
-        } else if (previous[destination] == -1) {
-            System.out.println("No path found");
-            return;
+
+    private static ArrayList<Integer> buildPath(int[] previous, int source, int destination) {
+        ArrayList<Integer> path = new ArrayList<>();
+        
+        // On part de la destination et on remonte jusqu'à la source
+        for (int at = destination; at != -1; at = previous[at]) {
+            path.add(at);
+            if (at == source) break;
         }
         
-        printPath(previous, source, previous[destination]);
-        System.out.print(destination + " ");
+        // Si le dernier élément ajouté n'est pas la source, cela signifie qu'il n'y a pas de chemin
+        if (path.get(path.size() - 1) != source) {
+            System.out.println("No path found");
+            return new ArrayList<>(); // Retourne un chemin vide si aucun chemin trouvé
+        }
+        
+        // Inverser la liste pour obtenir le chemin dans le bon ordre (de source à destination)
+        Collections.reverse(path);
+        return path;
+    }
+
+    private Chemin makechemin(Carte carte, ArrayList<Integer> path, double[][] graph) {
+        ArrayList<Case> route = new ArrayList<>(); 
+        ArrayList<Double> temps = new ArrayList<>(); 
+        double tempsTotal = 0;
+    
+        for (int k = 0; k < path.size(); k++) {
+            int node = path.get(k);
+            int i = node / carte.getNbColonnes();
+            int j = node % carte.getNbColonnes();
+    
+            try {
+                route.add(carte.getCase(i, j));
+                
+                // Ajouter le temps de trajet entre cases consécutives et l'ajouter au temps total
+                if (k > 0) {  // Ignorer le premier élément car il n'a pas de précédent
+                    int prevNode = path.get(k - 1);
+                    double tempsDeplacement = graph[prevNode][node];
+                    temps.add(tempsDeplacement);
+                    tempsTotal += tempsDeplacement;  // Accumuler le temps de déplacement
+                }
+            } catch (Exception e) {
+                System.out.println("Erreur lors de l'accès à la case (" + i + ", " + j + "): " + e.getMessage());
+            }
+        }
+    
+        // Créer et retourner un objet Chemin avec la route, les temps de trajet, et le temps total
+        Chemin chemin = new Chemin(route, temps, route.size(), tempsTotal);
+        return chemin;
     }
 }
 

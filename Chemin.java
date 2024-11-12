@@ -10,9 +10,9 @@ public class Chemin{
     private  ArrayList<Case> chemin; //Tableau des cases que le robot doit parcourir pour arriver à l'incendie visé
     private  ArrayList<Double> dates; //Tableau des dates dindice i auxquelles le robot va passer sur la case de même indice
     private int longueurChemin; //Nombre de cases à parcourir 
-    private int tempsTrajet; //Calcul du temps de trajet en prenant en compte la nature des terrains à franchir et les restrictions du robot concerné
+    private double tempsTrajet; //Calcul du temps de trajet en prenant en compte la nature des terrains à franchir et les restrictions du robot concerné
 
-    public Chemin(ArrayList<Case> chemin,  ArrayList<Double> dates, int longueurChemin, int tempsTrajet){
+    public Chemin(ArrayList<Case> chemin,  ArrayList<Double> dates, int longueurChemin, double tempsTrajet){
         this.chemin = chemin;
         this.dates = dates;
         this.longueurChemin = longueurChemin;
@@ -34,7 +34,7 @@ public class Chemin{
         return this.longueurChemin;
     }
 
-    public int getTempsTrajet(){
+    public double getTempsTrajet(){
         return this.tempsTrajet;
     }
 
@@ -69,14 +69,18 @@ public class Chemin{
     @Override
     public String toString() {
         String sb = "";
-
-        for (int i = 0; i < chemin.size(); i++) {
-            sb = sb + "etape " + i +" case " + chemin.get(i) + "\n";
+        String tm = "";
+        for (int i = 0; i < this.chemin.size(); i++) {
+            sb = sb + "etape " + i +" case " + this.chemin.get(i) + "\n";
+        }
+        for (int i = 0; i < this.dates.size(); i++) {
+            tm = tm + "et le temps de parcours " + this.dates.get(i) + "\n";
         }
 
-        sb = sb + "longueurChemin = " + longueurChemin;
+            
+        sb = sb + "longueurChemin = " + this.longueurChemin +"et le temps total " + this.tempsTrajet + "\n";
 
-        return sb.toString();
+        return (sb + tm).toString();
     }
 
 }

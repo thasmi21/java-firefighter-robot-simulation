@@ -6,7 +6,7 @@ import java.awt.Color;
 public class Main {
     public static void main(String[] args) {
 
-        String fichierDonnees = "cartes/test.map" ;// Remplacez par le chemin du fichier de données.
+        String fichierDonnees = "cartes/carteSujet.map" ;// Remplacez par le chemin du fichier de données.
         GUISimulator gui = new GUISimulator(900, 700, Color.BLACK);
         try {
             // Charger les données de simulation depuis le fichier
@@ -17,9 +17,10 @@ public class Main {
             donneesSimulation.afficherCarte(gui);
 
             System.out.println("== Affichage du chemin ==");
-            double[][] matrice = new double[donneesSimulation.getCarte().getNbColonnes()*donneesSimulation.getCarte().getNbColonnes()][donneesSimulation.getCarte().getNbColonnes()*donneesSimulation.getCarte().getNbColonnes()];
-            matrice = donneesSimulation.getRbotos().get(0).matrice_adj(donneesSimulation.getCarte(), donneesSimulation.getRbotos().get(0));
-            double stat = donneesSimulation.getRbotos().get(0).dijkstra(matrice, 1, 8);
+            try {
+               Case c = donneesSimulation.getCarte().getCase(6, 1);
+               System.out.println(donneesSimulation.getRbotos().get(1).dijkstra(donneesSimulation.getCarte(),c));
+            } catch (CarteHorsCarteException e) {}
 
         } catch (FileNotFoundException e) {
             System.out.println("Erreur : Fichier de données non trouvé.");
