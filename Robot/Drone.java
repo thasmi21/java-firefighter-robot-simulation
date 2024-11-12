@@ -1,7 +1,7 @@
 public class Drone extends Robot {
 
     public Drone(double vitesse_de_base,Case Position){
-        super("Drone",41.66,vitesse_de_base,10000,108000,10000,30,10000,Position,new NatureTerrain[] {NatureTerrain.TERRAIN_LIBRE, NatureTerrain.ROCHE,NatureTerrain.EAU,NatureTerrain.FORET,NatureTerrain.HABITAT});
+        super("Drone",Etat.LIBRE,41.66,vitesse_de_base,10000,108000,10000,30,10000,Position,new NatureTerrain[] {NatureTerrain.TERRAIN_LIBRE, NatureTerrain.ROCHE,NatureTerrain.EAU,NatureTerrain.FORET,NatureTerrain.HABITAT});
     }
 
     public double getVitesse(NatureTerrain nature){

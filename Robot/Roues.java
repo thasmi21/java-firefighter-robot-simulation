@@ -1,7 +1,7 @@
 public class Roues extends Robot{
 
     public Roues(double vitesse_de_base, Case position){
-        super("Roue",41.6, vitesse_de_base, 5000, 600, 100, 5, 5000, position, new NatureTerrain[] {NatureTerrain.TERRAIN_LIBRE, NatureTerrain.HABITAT});
+        super("Roue",Etat.LIBRE,41.6, vitesse_de_base, 5000, 600, 100, 5, 5000, position, new NatureTerrain[] {NatureTerrain.TERRAIN_LIBRE, NatureTerrain.HABITAT});
     }
 
     public double getVitesse(NatureTerrain actuelle){

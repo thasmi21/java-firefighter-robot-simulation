@@ -1,13 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
 
 public abstract class Robot{
     private String type;
+    private Etat state;
     private double vitesse_max;       // Vitesse de déplacement max du robot (km/h)
     private double vitesse_de_base ;  // Vitesse de déplacement du robot lue dans le fichier (km/h)
     private int capacite_reservoir;   // Capacité max du reservoir (en L)
@@ -20,7 +17,7 @@ public abstract class Robot{
     private NatureTerrain terrainsAcc[];
 
 
-    public Robot(String type,double vitesse_max,double vitesse_de_base, int capacite_reservoir,int temps_recharge,int decremente_reservoir,int temps_decharge,int etat_reservoir,Case position,NatureTerrain terrainsAcc[]){
+    public Robot(String type,Etat state,double vitesse_max,double vitesse_de_base, int capacite_reservoir,int temps_recharge,int decremente_reservoir,int temps_decharge,int etat_reservoir,Case position,NatureTerrain terrainsAcc[]){
         this.type = type;
         this.vitesse_max = vitesse_max;
         this.vitesse_de_base = vitesse_de_base;
@@ -40,6 +37,9 @@ public abstract class Robot{
         return this.type;
     }
 
+    public Etat getEtat(){
+        return this.state;
+    }
     /** Renvoie la vitesse maximum du robot*/
     public double getVitesseMax(){
         return this.vitesse_max;
