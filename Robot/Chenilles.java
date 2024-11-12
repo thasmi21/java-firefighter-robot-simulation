@@ -17,8 +17,4 @@ public class Chenilles extends Robot{
                 return getVitesseBase();
         }
     }
-
-    public void deverserEau()throws RobotIllegalVolException{
-        this.setReservoir(100);
-    }
 }

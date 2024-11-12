@@ -14,9 +14,5 @@ public class Roues extends Robot{
                 return 0;
         }
     }
-    public void deverserEau()throws RobotIllegalVolException{
-        this.setReservoir(100);
-    }
 
-    
 }

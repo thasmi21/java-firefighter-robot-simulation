@@ -11,7 +11,7 @@ public class DonneesSimulation {
     private ArrayList<Robot> robots;
     private ArrayList<Incendie> incendies;
 
-    public DonneesSimulation(Carte carte, ArrayList<Incendie> incendies,ArrayList<Robot> robots) {
+    public DonneesSimulation(Carte carte, ArrayList<Incendie> incendies, ArrayList<Robot> robots) {
         this.carte = carte;
         this.robots = robots;
         this.incendies = incendies;
@@ -32,7 +32,7 @@ public class DonneesSimulation {
     /**
      * Affiche la carte et les éléments de la simulation sur l'interface graphique.
      * @param gui L'interface graphique utilisée pour l'affichage.
-     */
+    */
     public void afficherCarte(GUISimulator gui) {
         gui.reset(); // Supprime les anciens éléments
 
@@ -56,7 +56,7 @@ public class DonneesSimulation {
             int x = incendie.getPosition().getColonne() * 30 +15 ;
             int y = incendie.getPosition().getLigne() * 30 +15 ;
             gui.addGraphicalElement(new Oval(x, y, Color.RED, Color.ORANGE, 20));
-            gui.addGraphicalElement(new Text(x, y - 10, Color.BLACK, Integer.toString(incendie.getVol_pour_eteindre())));
+            gui.addGraphicalElement(new Text(x, y - 10, Color.BLACK, Integer.toString(incendie.getVolExtinction())));
         }
 
         // Dessin des robots

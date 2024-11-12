@@ -15,7 +15,9 @@ public class Pattes extends Robot{
         }
     }
 
-    public void deverserEau()throws RobotIllegalVolException{
-        this.setReservoir(10);
+    @Override // On réécrit la méthode derverserEau pour le robot à pattes uniquement car son réservoir est le seul à être infini
+    public int deverserEau() {
+        // Il n'y a pas d'actualisation de l'état du réservoir à faire car il est considéré de taille infinie
+        return this.getDechargeReservoir(); // On se contente donc de renvoyer le volume de poudre déversé
     }
 }

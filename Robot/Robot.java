@@ -8,25 +8,25 @@ import java.util.PriorityQueue;
 
 public abstract class Robot{
     private String type;
-    private double vitesse_max;            // vitesse de déplacement max du robot (km/h)
-    private double vitesse_de_base ;           // vitesse de déplacement du robot lue dans le fichier (km/h)
-    private int capacite_reservoir;      // capacité max du reservoir (enL)
-    private int temps_recharge;          // temps pour recharger completement le reservoir (s)
-    private int decrementerReservoir;      // quantité déversée pour une extinction (en L)
-    private int temps_decharge;           // temps qu'il faut pour verser la quantité d'eau pour une extinction (en s)
-    private int etat_reservoir;          //  etat actuel du reservoir entre 0 et capacité reservoir (en L)
-    private Case position;
+    private double vitesse_max;       // Vitesse de déplacement max du robot (km/h)
+    private double vitesse_de_base ;  // Vitesse de déplacement du robot lue dans le fichier (km/h)
+    private int capacite_reservoir;   // Capacité max du reservoir (en L)
+    private int temps_recharge;       // Temps pour recharger completement le reservoir (s)
+    private int decremente_reservoir; // Quantité déversée pour une extinction (en L)
+    private int temps_decharge;       // Temps qu'il faut pour verser la quantité d'eau pour une extinction (en s)
+    private int etat_reservoir;       // Etat actuel du reservoir entre 0 et capacité reservoir (en L)
+    private Case position;            // Position courante du robot
 
     private NatureTerrain terrainsAcc[];
 
 
-    public Robot(String type,double vitesse_max,double vitesse_de_base, int capacite_reservoir,int temps_recharge,int decrementerReservoir,int temps_decharge,int etat_reservoir,Case position,NatureTerrain terrainsAcc[]){
+    public Robot(String type,double vitesse_max,double vitesse_de_base, int capacite_reservoir,int temps_recharge,int decremente_reservoir,int temps_decharge,int etat_reservoir,Case position,NatureTerrain terrainsAcc[]){
         this.type = type;
         this.vitesse_max = vitesse_max;
         this.vitesse_de_base = vitesse_de_base;
         this.capacite_reservoir = capacite_reservoir;
         this.temps_recharge = temps_recharge;
-        this.decrementerReservoir = decrementerReservoir;
+        this.decremente_reservoir = decremente_reservoir;
         this.temps_decharge = temps_decharge;
         this.etat_reservoir = etat_reservoir;
         this.position = position;
@@ -62,7 +62,7 @@ public abstract class Robot{
 
     /** Renvoie la quantité déversée pour une extinction */
     public int getDechargeReservoir(){
-        return this.decrementerReservoir;
+        return this.decremente_reservoir;
     }
 
     /** Renvoie le temps de dechargement du réservoir pour une opération unitaire de deversement*/
@@ -111,21 +111,32 @@ public abstract class Robot{
         if (isTerrainAccessible(coordonnee)) {
             this.position = coordonnee;
         } else {
-            throw new RobotIllegalPosException("la position n'est pas accessible pour le robot\n");
+            throw new RobotIllegalPosException("la case "+coordonnee.toString()+" n'est pas accessible pour le robot\n");
         }
     }
 
-    /** réalise une operation unitaire de deversage ( cf documentation pour le volume deduit du reservoir)
-    *  @exception RobotIllegalVolException Lève une exception RobotIllegalVolException si le volume <br>vol<br> est superieure au volume actuel du reservoir ou si le volume est negatif */
-    public abstract void deverserEau()throws RobotIllegalVolException;
+    /** Réalise une opération unitaire de déversage (cf documentation pour le volume deduit du reservoir) et renvoie la quantité d'eau <b>déversée</b>*/
+    public int deverserEau() {
+        try {
+            int etat_reservoir = this.getEtatReservoir();
+            int decharge_reservoir = this.getDechargeReservoir();
+            // On calcule le volume d'eau à déverser en fonction de l'état actuel du réservoir
+            int volume_deversement = (decharge_reservoir < etat_reservoir) ? etat_reservoir - decharge_reservoir : etat_reservoir;
+            this.setReservoir(volume_deversement); // On déverse finalement l'eau sur la case courante (attention: l'état d'un incendie présent sur cette case ne sera pas actulisé ici)
+            return volume_deversement; // On oublie pas de renvoyer le volume d'eau déversé
+        } catch(RobotIllegalVolException e) {
+            System.out.println(e);
+            return 0; // En cas d'erreur le robot n'a déversé aucun litre d'eau
+        }
+    }
 
-    /** methode pour remplir le reservoir **/
-    public  void rechargerReservoir(){
+    /** Méthode pour remplir le reservoir **/
+    public  void rechargerReservoir() {
         this.etat_reservoir = this.capacite_reservoir;
     }
     
-    /** methode pour deduir la quantité vol du réservoir
-     * @param vol : volume a déduire du réservoir
+    /** Méthode pour déduire la quantité vol du réservoir
+     * @param vol Volume à déduire du réservoir
      * @exception RobotIllegalVolException Lève une exception RobotIllegalVolException si le volume <br>vol<br> est superieure au volume actuel du reservoir ou si le volume est negatif */
     public void setReservoir(int vol)throws RobotIllegalVolException{
         if(vol > this.etat_reservoir || vol<0) throw new RobotIllegalVolException("le volume "+ vol + "est superieur à la capacité du reservoir  ou negatif!\n");

@@ -7,8 +7,4 @@ public class Drone extends Robot {
     public double getVitesse(NatureTerrain nature){
         return this.getVitesseBase();
     }
-
-    public void deverserEau()throws RobotIllegalVolException{
-        this.setReservoir(this.getCapaciteReservoir());
-    }
 }    
