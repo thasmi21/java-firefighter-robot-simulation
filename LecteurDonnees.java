@@ -6,6 +6,7 @@ import java.util.zip.DataFormatException;
 import robots.*;
 import map.Carte;
 import map.Case;
+import map.Incendie;
 import map.NatureTerrain;
 
 

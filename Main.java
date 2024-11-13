@@ -4,6 +4,7 @@ import gui.GUISimulator;
 import java.awt.Color;
 import map.*;
 import robots.*;
+import simulation.DonneesSimulation;
 import exceptions.*;
 
 public class Main {
