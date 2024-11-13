@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class Chemin{
 
     private  ArrayList<Case> chemin; //Tableau des cases que le robot doit parcourir pour arriver à l'incendie visé
-    private  ArrayList<Double> dates; //Tableau des dates dindice i auxquelles le robot va passer sur la case de même indice
+    private  ArrayList<Long> dates; //Tableau des dates dindice i auxquelles le robot va passer sur la case de même indice
     private int longueurChemin; //Nombre de cases à parcourir 
-    private double tempsTrajet; //Calcul du temps de trajet en prenant en compte la nature des terrains à franchir et les restrictions du robot concerné
+    private long tempsTrajet; //Calcul du temps de trajet en prenant en compte la nature des terrains à franchir et les restrictions du robot concerné
 
-    public Chemin(ArrayList<Case> chemin,  ArrayList<Double> dates, int longueurChemin, double tempsTrajet){
+    public Chemin(ArrayList<Case> chemin,  ArrayList<Long> dates, int longueurChemin, long tempsTrajet){
         this.chemin = chemin;
         this.dates = dates;
         this.longueurChemin = longueurChemin;
@@ -27,7 +27,7 @@ public class Chemin{
         return this.chemin;
     }
 
-    public ArrayList<Double>  getDates(){
+    public ArrayList<Long>  getDates(){
         return this.dates;
     }
 
@@ -35,26 +35,8 @@ public class Chemin{
         return this.longueurChemin;
     }
 
-    public double getTempsTrajet(){
+    public long getTempsTrajet(){
         return this.tempsTrajet;
-    }
-
-
-    //   utile ?
-
-    public Case getIemeCase(int i) throws IndexOutOfBoundsException{
-        if (i<0 || i>=this.chemin.size()){
-            throw new IndexOutOfBoundsException("L'index i renseigné est en dehors des limites du tableau Cases !\n");
-        }
-        return this.chemin.get(i);
-    }
-    
-     public Double getIemeDate(int i) throws IndexOutOfBoundsException
-    {
-        if (i<0 || i>=this.chemin.size()){
-            throw new IndexOutOfBoundsException("L'index i renseigné est en dehors des limites du tableau Cases !\n");
-        }
-        return this.dates.get(i);
     }
 
     /* SETTERS **/

@@ -16,6 +16,11 @@ public class Simulateur implements Simulable {
         this.gui = null;
     }
 
+    public long getDateSimutaion(){
+        return dateSimulation;
+    }
+    
+
     /** Construit le simulateur, <b>initialise la date de début de simulation à 0</b> et lie une GUI à ce simulateur 
      * @param gui Référence vers une instance de GUISimulator déjà existante
     */

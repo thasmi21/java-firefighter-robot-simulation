@@ -2,8 +2,15 @@ package robots;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.PriorityQueue;
+
 import map.*;
+import simulation.DeplacerRobotEvenement;
+import simulation.DeverserEauRobotEvenement;
+import simulation.Evenement;
 import exceptions.*;
+import simulation.*;
+
 
 public abstract class Robot{
     private String type;
@@ -95,6 +102,10 @@ public abstract class Robot{
 
     /////////// autre methodes ///////////
 
+
+    public void setEtat(Etat etat){
+        this.state = etat;
+    }
     /** methode pour dire si la case coordonnee est accessible au robot
      * @param coordonnee :case a verifirer */
     private boolean isTerrainAccessible(Case coordonnee) {
@@ -138,13 +149,13 @@ public abstract class Robot{
         this.etat_reservoir = this.capacite_reservoir;
     }
     
-    /** Méthode pour définir la quantité d'eau du réservoir à vol
+    /** Méthode pour déduire la quantité vol du réservoir
      * @param vol Volume à déduire du réservoir
      * @exception RobotIllegalVolException Lève une exception RobotIllegalVolException si le volume <br>vol<br> est superieure au volume actuel du reservoir ou si le volume est negatif */
     public void setReservoir(int vol)throws RobotIllegalVolException{
         if(vol > this.etat_reservoir || vol<0) throw new RobotIllegalVolException("le volume "+ vol + "est superieur à la capacité du reservoir  ou negatif!\n");
 
-        this.etat_reservoir = vol;
+        this.etat_reservoir = etat_reservoir - vol;
     }
 
     
@@ -256,8 +267,8 @@ public abstract class Robot{
 
     private Chemin makechemin(Carte carte, ArrayList<Integer> path, double[][] graph) {
         ArrayList<Case> route = new ArrayList<>(); 
-        ArrayList<Double> temps = new ArrayList<>(); 
-        double tempsTotal = 0;
+        ArrayList<Long> temps = new ArrayList<>(); 
+        long tempsTotal = 0;
     
         for (int k = 0; k < path.size(); k++) {
             int node = path.get(k);
@@ -271,7 +282,8 @@ public abstract class Robot{
                 if (k > 0) {  // Ignorer le premier élément car il n'a pas de précédent
                     int prevNode = path.get(k - 1);
                     double tempsDeplacement = graph[prevNode][node];
-                    temps.add(tempsDeplacement);
+                    long t = (long) Math.floor(tempsDeplacement);
+                    temps.add(t);
                     tempsTotal += tempsDeplacement;  // Accumuler le temps de déplacement
                 }
             } catch (Exception e) {
@@ -282,6 +294,17 @@ public abstract class Robot{
         // Créer et retourner un objet Chemin avec la route, les temps de trajet, et le temps total
         Chemin chemin = new Chemin(route, temps, route.size(), tempsTotal);
         return chemin;
+    }
+
+    public void mkevent(Incendie incendie, Chemin chem,PriorityQueue<Evenement> evenements, Simulateur sim){
+        while(chem.getChemin().size() !=0){
+            Case actuelle = chem.getChemin().remove(0);
+            long date = chem.getDates().remove(0);
+            DeplacerRobotEvenement e = new DeplacerRobotEvenement(this, actuelle, sim.getDateSimutaion() + date);
+            evenements.add(e);
+        }
+        DeverserEauRobotEvenement deverser = new DeverserEauRobotEvenement(this,datecourant + this.getTempsDecharge());
+        //changerEtatEvenement e ) = new (this,datecourant + this.getTempsDecharge());
     }
 }
 

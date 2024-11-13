@@ -1,2 +1,2 @@
 package robots;
-public enum Etat{LIBRE, MOUVEMENT, EXTINCTION,RECHARGEMENT,RESERVOIR_VIDE}
+public enum Etat{LIBRE, OCCUPE}
