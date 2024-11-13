@@ -298,7 +298,7 @@ public abstract class Robot{
             DeplacerRobotEvenement e = new DeplacerRobotEvenement(this, actuelle, sim.getDateSimutaion() + date);
             evenements.add(e);
         }
-        DeverserEauRobotEvenement deverser = new DeverserEauRobotEvenement(this,datecourant + this.getTempsDecharge());
+        DeverserEauRobotEvenement deverser = new DeverserEauRobotEvenement(this, sim.getDateSimutaion() + this.getTempsDecharge());
         //changerEtatEvenement e ) = new (this,datecourant + this.getTempsDecharge());
     }
 }
