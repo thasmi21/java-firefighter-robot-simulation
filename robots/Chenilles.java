@@ -21,4 +21,23 @@ public class Chenilles extends Robot{
                 return getVitesseBase();
         }
     }
+
+    public void remplissageReservoir() throws RobotIllegalPosException{
+        int col=this.getPosition().getColonne();
+        int lig=this.getPosition().getLigne();
+        
+        int verifEau=0;
+        if (carte.getVoisin(this.getPosition(), NORD).getNature()==EAU){verifEau=1;}
+        else if (carte.getVoisin(this.getPosition(), SUD).getNature()==EAU){verifEau=1;}
+        else if (carte.getVoisin(this.getPosition(), EST).getNature()==EAU){verifEau=1;}
+        else if (carte.getVoisin(this.getPosition(), OUEST).getNature()==EAU){verifEau=1;}
+        
+        if (verifEau!=1){
+            throw new IndexOutOfBoundsException("Le robot n'est pas autorisé à remplir son réservoir sur cette case.\n");
+        }
+
+        this.setReservoir(this.capacite_reservoir);
+        //Récupérer la date actuelle
+        //Créer un évènement à t+300 :remplissageReservoir
+    }
 }
