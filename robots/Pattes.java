@@ -1,4 +1,5 @@
 package robots;
+import exceptions.RobotIllegalPosException;
 import map.Case;
 import map.NatureTerrain;
 
@@ -24,4 +25,6 @@ public class Pattes extends Robot{
         // Il n'y a pas d'actualisation de l'état du réservoir à faire car il est considéré de taille infinie
         return this.getDechargeReservoir(); // On se contente donc de renvoyer le volume de poudre déversé
     }
+
+    public void rechargerReservoir() throws RobotIllegalPosException {}
 }

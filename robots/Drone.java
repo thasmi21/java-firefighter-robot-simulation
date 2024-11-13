@@ -1,4 +1,5 @@
 package robots;
+import exceptions.RobotIllegalPosException;
 import map.Case;
 import map.NatureTerrain;
 
@@ -11,4 +12,6 @@ public class Drone extends Robot {
     public double getVitesse(NatureTerrain nature){
         return this.getVitesseBase();
     }
+
+    public void rechargerReservoir() throws RobotIllegalPosException {}
 }    

@@ -1,4 +1,5 @@
 package robots;
+import exceptions.RobotIllegalPosException;
 import map.Case;
 import map.NatureTerrain;
 
@@ -22,7 +23,7 @@ public class Chenilles extends Robot{
         }
     }
 
-    public void remplissageReservoir() throws RobotIllegalPosException{
+    public void rechargerReservoir() throws RobotIllegalPosException {
         int col=this.getPosition().getColonne();
         int lig=this.getPosition().getLigne();
         
@@ -38,6 +39,6 @@ public class Chenilles extends Robot{
 
         this.setReservoir(this.capacite_reservoir);
         //Récupérer la date actuelle
-        //Créer un évènement à t+300 :remplissageReservoir
+        //Créer un évènement à t+300 :RechargerEauRobotEvenement
     }
 }

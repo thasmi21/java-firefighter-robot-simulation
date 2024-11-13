@@ -5,9 +5,6 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 
 import map.*;
-import simulation.DeplacerRobotEvenement;
-import simulation.DeverserEauRobotEvenement;
-import simulation.Evenement;
 import exceptions.*;
 import simulation.*;
 
@@ -145,9 +142,7 @@ public abstract class Robot{
     }
 
     /** Méthode pour remplir le reservoir **/
-    public  void rechargerReservoir() {
-        this.etat_reservoir = this.capacite_reservoir;
-    }
+    public abstract void rechargerReservoir() throws RobotIllegalPosException;
     
     /** Méthode pour définir la quantité d'eau du réservoir à vol
      * @param vol Volume à déduire du réservoir
