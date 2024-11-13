@@ -1,5 +1,6 @@
 package robots;
 import exceptions.RobotIllegalPosException;
+import map.Carte;
 import map.Case;
 import map.NatureTerrain;
 
@@ -20,5 +21,5 @@ public class Roues extends Robot{
         }
     }
 
-    public void rechargerReservoir() throws RobotIllegalPosException {}
+    public void rechargerReservoir(Carte carte) throws RobotIllegalPosException {}
 }

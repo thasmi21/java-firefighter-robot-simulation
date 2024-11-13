@@ -1,5 +1,6 @@
 package robots;
 import exceptions.RobotIllegalPosException;
+import map.Carte;
 import map.Case;
 import map.NatureTerrain;
 
@@ -26,5 +27,5 @@ public class Pattes extends Robot{
         return this.getDechargeReservoir(); // On se contente donc de renvoyer le volume de poudre déversé
     }
 
-    public void rechargerReservoir() throws RobotIllegalPosException {}
+    public void rechargerReservoir(Carte carte) throws RobotIllegalPosException {}
 }

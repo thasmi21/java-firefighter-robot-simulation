@@ -142,7 +142,7 @@ public abstract class Robot{
     }
 
     /** Méthode pour remplir le reservoir **/
-    public abstract void rechargerReservoir() throws RobotIllegalPosException;
+    public abstract void rechargerReservoir(Carte carte) throws RobotIllegalPosException;
     
     /** Méthode pour définir la quantité d'eau du réservoir à vol
      * @param vol Volume à déduire du réservoir

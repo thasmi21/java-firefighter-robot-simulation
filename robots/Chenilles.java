@@ -1,7 +1,12 @@
 package robots;
 import exceptions.RobotIllegalPosException;
+import exceptions.RobotIllegalVolException;
 import map.Case;
+import map.Carte;
 import map.NatureTerrain;
+import map.Direction;
+import exceptions.CarteHorsCarteException;
+import exceptions.RobotIllegalVolException;
 
 public class Chenilles extends Robot{
 
@@ -23,21 +28,29 @@ public class Chenilles extends Robot{
         }
     }
 
-    public void rechargerReservoir() throws RobotIllegalPosException {
+    public void rechargerReservoir(Carte carte) throws RobotIllegalPosException {
         int col=this.getPosition().getColonne();
         int lig=this.getPosition().getLigne();
         
         int verifEau=0;
-        if (carte.getVoisin(this.getPosition(), NORD).getNature()==EAU){verifEau=1;}
-        else if (carte.getVoisin(this.getPosition(), SUD).getNature()==EAU){verifEau=1;}
-        else if (carte.getVoisin(this.getPosition(), EST).getNature()==EAU){verifEau=1;}
-        else if (carte.getVoisin(this.getPosition(), OUEST).getNature()==EAU){verifEau=1;}
+        try{
+            if (carte.getVoisin(this.getPosition(), Direction.NORD).getNature()==NatureTerrain.EAU){verifEau=1;}
+            else if (carte.getVoisin(this.getPosition(), Direction.SUD).getNature()==NatureTerrain.EAU){verifEau=1;}
+            else if (carte.getVoisin(this.getPosition(), Direction.EST).getNature()==NatureTerrain.EAU){verifEau=1;}
+            else if (carte.getVoisin(this.getPosition(), Direction.OUEST).getNature()==NatureTerrain.EAU){verifEau=1;}
+        } catch(CarteHorsCarteException e) {
+            System.out.println(e);
+        }
         
         if (verifEau!=1){
             throw new IndexOutOfBoundsException("Le robot n'est pas autorisé à remplir son réservoir sur cette case.\n");
         }
 
-        this.setReservoir(this.capacite_reservoir);
+        try {
+            this.setReservoir(this.getCapaciteReservoir());
+        } catch(RobotIllegalVolException e) {
+            System.out.println(e);
+        }
         //Récupérer la date actuelle
         //Créer un évènement à t+300 :RechargerEauRobotEvenement
     }
