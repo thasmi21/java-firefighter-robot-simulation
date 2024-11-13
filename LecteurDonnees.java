@@ -3,6 +3,11 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
+import robots.*;
+import map.Carte;
+import map.Case;
+import map.NatureTerrain;
+
 
 
 /**
@@ -94,13 +99,14 @@ public class LecteurDonnees {
     /**
      * Lit et affiche les donnees des incendies.
      */
-    private ArrayList<Incendie> lireIncendies() throws DataFormatException {
+    private HashMap<Case, Incendie> lireIncendies() throws DataFormatException {
         ignorerCommentaires();
         try {
             int nbIncendies = scanner.nextInt();
-            ArrayList<Incendie> incendies = new ArrayList<>();
+            HashMap<Case, Incendie> incendies = new HashMap<Case, Incendie>();
             for (int i = 0; i < nbIncendies; i++) {
-                incendies.add(lireIncendie(i));
+                Incendie incendie = lireIncendie(i);
+                incendies.put(incendie.getPosition(), incendie);
             }
             return incendies;
         } catch (NoSuchElementException e) {

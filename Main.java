@@ -2,6 +2,9 @@ import java.io.FileNotFoundException;
 import java.util.zip.DataFormatException;
 import gui.GUISimulator;
 import java.awt.Color;
+import map.*;
+import robots.*;
+import exceptions.*;
 
 public class Main {
     public static void main(String[] args) {

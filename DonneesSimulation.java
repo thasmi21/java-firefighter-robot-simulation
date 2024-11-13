@@ -2,10 +2,15 @@ import gui.GUISimulator;
 import gui.ImageElement;
 //import gui.Rectangle;
 import gui.Text;
+import map.Carte;
+import map.Case;
+import map.NatureTerrain;
+import robots.Robot;
 import gui.Oval;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import exceptions.CarteHorsCarteException;
 
 public class DonneesSimulation {
     private Carte carte;
@@ -77,11 +82,12 @@ public class DonneesSimulation {
         }
 
         // Dessin des incendies
-        for (Incendie incendie : incendies) {
-            int x = incendie.getPosition().getColonne() * 30 +15 ;
-            int y = incendie.getPosition().getLigne() * 30 +15 ;
+        for(Case c : incendies.keySet()){
+            Incendie i = incendies.get(c);
+            int x = i.getPosition().getColonne() * 30 +15 ;
+            int y = i.getPosition().getLigne() * 30 +15 ;
             gui.addGraphicalElement(new Oval(x, y, Color.RED, Color.ORANGE, 20));
-            gui.addGraphicalElement(new Text(x, y - 10, Color.BLACK, Integer.toString(incendie.getVolExtinction())));
+            gui.addGraphicalElement(new Text(x, y - 10, Color.BLACK, Integer.toString(i.getVolExtinction())));
         }
 
         // Dessin des robots

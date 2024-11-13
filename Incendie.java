@@ -1,3 +1,5 @@
+import map.Case;
+
 public class Incendie {
     Case position;
     int vol_exctinction;
