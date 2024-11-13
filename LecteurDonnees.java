@@ -8,7 +8,7 @@ import map.Carte;
 import map.Case;
 import map.Incendie;
 import map.NatureTerrain;
-
+import simulation.*;
 
 
 /**

@@ -2,6 +2,7 @@ package simulation;
 public abstract class Evenement implements Comparable<Evenement> {
     
     private long date; // Date en secondes à laquelle l'événement doit être exécuté
+    private static DonneesSimulation simulation; // On utilise la référence d'une simulation pour pouvoir modifier les incendies au besoin
 
     /** Construit un événement à l'aide d'une <b>date qui fixe sa priorité</b> 
      * @param date Date à laquelle l'événement doit être exécuté
@@ -10,9 +11,19 @@ public abstract class Evenement implements Comparable<Evenement> {
         this.date = date;
     }
 
+    /** Définit l'objet DonneeSimulation associé à la simulation actuelle */
+    public static void setSimulation(DonneesSimulation sim) {
+        simulation = sim;
+    }
+
     /** Renvoie la <b>date</b> à laquelle l'événement doit être exécuté */
     public long getDate() {
         return this.date;
+    }
+
+    /** Renvoie l'objet DonneesSimulation associé à la simulation actuelle */
+    public static DonneesSimulation getDonneesSimulation() {
+        return simulation;
     }
 
     /** <b>Effectue la ou les opérations associées</b> à l'exécution de l'événement dans la simulation */

@@ -149,13 +149,13 @@ public abstract class Robot{
         this.etat_reservoir = this.capacite_reservoir;
     }
     
-    /** Méthode pour déduire la quantité vol du réservoir
+    /** Méthode pour définir la quantité d'eau du réservoir à vol
      * @param vol Volume à déduire du réservoir
      * @exception RobotIllegalVolException Lève une exception RobotIllegalVolException si le volume <br>vol<br> est superieure au volume actuel du reservoir ou si le volume est negatif */
     public void setReservoir(int vol)throws RobotIllegalVolException{
         if(vol > this.etat_reservoir || vol<0) throw new RobotIllegalVolException("le volume "+ vol + "est superieur à la capacité du reservoir  ou negatif!\n");
 
-        this.etat_reservoir = etat_reservoir - vol;
+        this.etat_reservoir = vol;
     }
 
     
