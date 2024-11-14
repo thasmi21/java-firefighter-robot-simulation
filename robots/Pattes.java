@@ -1,6 +1,4 @@
 package robots;
-import exceptions.RobotIllegalPosException;
-import map.Carte;
 import map.Case;
 import map.NatureTerrain;
 

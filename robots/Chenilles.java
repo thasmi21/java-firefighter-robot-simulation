@@ -6,7 +6,6 @@ import map.Carte;
 import map.NatureTerrain;
 import map.Direction;
 import exceptions.CarteHorsCarteException;
-import exceptions.RobotIllegalVolException;
 
 public class Chenilles extends Robot{
 
@@ -31,9 +30,6 @@ public class Chenilles extends Robot{
     /** Recharge le résevoir du robot en respectant ses caractéristiques
      * @param carte :carte sur lequel le robot s'exécute */
     public void rechargerReservoir(Carte carte) throws RobotIllegalPosException {
-        int col=this.getPosition().getColonne();
-        int lig=this.getPosition().getLigne();
-        
         int verifEau=0;
 
         //Vérifie qu'il y a bien une case eau autours de lui, sinon lève une exception
@@ -57,8 +53,5 @@ public class Chenilles extends Robot{
             System.out.println(e);
         }
         
-        //Crée un événement placé à (t actuel) + (temps de remplissage)=5 minutes pouir exécuter le remplissage
-        long t = this.simulateur.getDateSimulation();
-        Evenement RechargerEauRobotEvenement = new Evenement(this.robot, this.carte, t + 300);
     }
 }

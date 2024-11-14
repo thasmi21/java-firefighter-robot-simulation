@@ -27,6 +27,7 @@ public abstract class Robot{
 
     public Robot(String type,Etat state,double vitesse_max,double vitesse_de_base, int capacite_reservoir,int temps_recharge,int decremente_reservoir,int temps_decharge,int etat_reservoir,Case position,NatureTerrain terrainsAcc[]){
         this.type = type;
+        this.state = state;
         this.vitesse_max = vitesse_max;
         this.vitesse_de_base = vitesse_de_base;
         this.capacite_reservoir = capacite_reservoir;
@@ -276,20 +277,20 @@ public abstract class Robot{
             try {
                 route.add(carte.getCase(i, j));
                 
-                // Ajouter le temps de trajet entre cases consécutives et l'ajouter au temps total
+                // Ajouter le temps de trajet cumulé pour atteindre la case actuelle
                 if (k > 0) {  // Ignorer le premier élément car il n'a pas de précédent
                     int prevNode = path.get(k - 1);
                     double tempsDeplacement = graph[prevNode][node];
-                    long t = (long) Math.floor(tempsDeplacement);
-                    temps.add(t);
-                    tempsTotal += tempsDeplacement;  // Accumuler le temps de déplacement
+                    tempsTotal += Math.floor(tempsDeplacement);  // Accumuler le temps de déplacement
+                    temps.add(tempsTotal);  // Ajouter le temps cumulé à la liste
+                } else {
+                    temps.add(tempsTotal);  // Ajouter 0 pour la première case
                 }
             } catch (Exception e) {
                 System.out.println("Erreur lors de l'accès à la case (" + i + ", " + j + "): " + e.getMessage());
             }
         }
-        long a =100;
-        temps.add(a);
+        route.remove(0);
         // Créer et retourner un objet Chemin avec la route, les temps de trajet, et le temps total
         Chemin chemin = new Chemin(route, temps, route.size(), tempsTotal);
         return chemin;
@@ -301,11 +302,11 @@ public abstract class Robot{
         while(chem.getChemin().size() !=0){
             Case actuelle = chem.getChemin().remove(0);
             long date = chem.getDates().remove(0);
-            DeplacerRobotEvenement e = new DeplacerRobotEvenement(this, actuelle, sim.getDateSimutaion() + date);
+            DeplacerRobotEvenement e = new DeplacerRobotEvenement(this, actuelle, sim.getDateSimulation() + date);
             sim.addEvenement(e);
-        }
-        DeverserEauRobotEvenement deverser = new DeverserEauRobotEvenement(this, sim.getDateSimutaion() + this.getTempsDecharge());
-        ChangerStatutRobotEvenement etat = new ChangerStatutRobotEvenement(this, Etat.OCCUPE, sim.getDateSimutaion() + this.getTempsDecharge());
+        } 
+        DeverserEauRobotEvenement deverser = new DeverserEauRobotEvenement(this, sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge(), sim.getDonneesSimulation());
+        ChangerStatutRobotEvenement etat = new ChangerStatutRobotEvenement(this, Etat.OCCUPE, sim.getDateSimulation() + this.getTempsDecharge());
         sim.addEvenement(deverser);
         sim.addEvenement(etat);
         }

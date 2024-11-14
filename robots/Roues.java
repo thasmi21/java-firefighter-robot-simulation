@@ -1,8 +1,6 @@
 package robots;
-import exceptions.RobotIllegalPosException;
-import map.Carte;
-import map.Case;
-import map.NatureTerrain;
+import exceptions.*;
+import map.*;
 
 public class Roues extends Robot{
 
@@ -24,9 +22,6 @@ public class Roues extends Robot{
     /** Recharge le résevoir du robot en respectant ses caractéristiques
      * @param carte :carte sur lequel le robot s'exécute */
     public void rechargerReservoir(Carte carte) throws RobotIllegalPosException {
-        int col=this.getPosition().getColonne();
-        int lig=this.getPosition().getLigne();
-        
         int verifEau=0;
 
         //Vérifie qu'il y a bien une case eau autours de lui, sinon lève une exception
@@ -49,9 +44,6 @@ public class Roues extends Robot{
         } catch(RobotIllegalVolException e) {
             System.out.println(e);
         }
-        
-        //Crée un événement placé à (t actuel) + (temps de remplissage)=10 minutes pouir exécuter le remplissage
-        long t = this.simulateur.getDateSimulation();
-        Evenement RechargerEauRobotEvenement = new Evenement(this.robot, this.carte, t + 600);
+
     }
 }
