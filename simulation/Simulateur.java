@@ -22,7 +22,7 @@ public class Simulateur implements Simulable {
     }
 
 
-    public long getDateSimutaion(){
+    public long getDateSimulation(){
         return dateSimulation;
     }
     
