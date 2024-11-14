@@ -28,11 +28,15 @@ public class Chenilles extends Robot{
         }
     }
 
+    /** Recharge le résevoir du robot en respectant ses caractéristiques
+     * @param carte :carte sur lequel le robot s'exécute */
     public void rechargerReservoir(Carte carte) throws RobotIllegalPosException {
         int col=this.getPosition().getColonne();
         int lig=this.getPosition().getLigne();
         
         int verifEau=0;
+
+        //Vérifie qu'il y a bien une case eau autours de lui, sinon lève une exception
         try{
             if (carte.getVoisin(this.getPosition(), Direction.NORD).getNature()==NatureTerrain.EAU){verifEau=1;}
             else if (carte.getVoisin(this.getPosition(), Direction.SUD).getNature()==NatureTerrain.EAU){verifEau=1;}
@@ -42,16 +46,19 @@ public class Chenilles extends Robot{
             System.out.println(e);
         }
         
-        if (verifEau!=1){
+        if (verifEau!=1){ //Lève une exception si aucune des 4 cases autours du robot n'est de l'eau
             throw new IndexOutOfBoundsException("Le robot n'est pas autorisé à remplir son réservoir sur cette case.\n");
         }
 
+        //Remplie le résevoir à la capacité maximale de ce type de robot = 2000L
         try {
             this.setReservoir(this.getCapaciteReservoir());
         } catch(RobotIllegalVolException e) {
             System.out.println(e);
         }
-        //Récupérer la date actuelle
-        //Créer un évènement à t+300 :RechargerEauRobotEvenement
+        
+        //Crée un événement placé à (t actuel) + (temps de remplissage)=5 minutes pouir exécuter le remplissage
+        long t = this.simulateur.getDateSimulation();
+        Evenement RechargerEauRobotEvenement = new Evenement(this.robot, this.carte, t + 300);
     }
 }
