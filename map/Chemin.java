@@ -44,10 +44,6 @@ public class Chemin{
     public void addCase(Case Case) {
         this.chemin.add(Case);
     }
-    
-    public void removeFirstCase() {
-        this.chemin.remove(0);
-    }
 
     @Override
     public String toString() {
@@ -56,11 +52,11 @@ public class Chemin{
         for (int i = 0; i < this.chemin.size(); i++) {
             sb = sb + "etape " + i +" case " + this.chemin.get(i) + "\n";
         }
-        for (int i = 0; i < this.dates.size(); i++) {
-            tm = tm + "et le temps de parcours " + this.dates.get(i) + "\n";
-        }
 
-            
+        for (int k = 0; k < this.chemin.size(); k++) {
+            sb = sb + "etape " + k+" temps " + this.dates.get(k) + "\n";
+        }
+       
         sb = sb + "longueurChemin = " + this.longueurChemin +"et le temps total " + this.tempsTrajet + "\n";
 
         return (sb + tm).toString();

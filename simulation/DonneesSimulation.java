@@ -25,13 +25,6 @@ public class DonneesSimulation {
         this.incendies = incendies;
     }
 
-    /** Constructeur si on a que la carte 
-     * @param carte Carte à utiliser pour la simulation
-    */
-    public DonneesSimulation(Carte carte) {
-
-    }
-
     public Carte getCarte() {
         return this.carte;
     }
