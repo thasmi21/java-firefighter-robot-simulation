@@ -28,6 +28,6 @@ public class Incendie implements Comparable<Incendie> {
 
     @Override
     public int compareTo(Incendie other) {
-        return Integer.compare(other.getVolExtinction(), this.vol_exctinction);
+        return Integer.compare(other.getVolExtinction(), this.vol_exctinction); // Priorité au feu le plus grand
     }
 }

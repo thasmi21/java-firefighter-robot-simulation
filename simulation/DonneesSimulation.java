@@ -49,7 +49,7 @@ public class DonneesSimulation {
         return this.carte;
     }
 
-    public ArrayList<Robot> getRbotos() {
+    public ArrayList<Robot> getRobots() {
         return this.robots;
     }
 

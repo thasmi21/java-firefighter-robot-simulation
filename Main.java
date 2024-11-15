@@ -15,7 +15,7 @@ public class Main {
             Simulateur sim = new Simulateur(gui, donneesSimulation, fichierDonnees);
             System.out.println(donneesSimulation.getWaterTiles());
 
-            ChefPompier chef = new ChefPompier(donneesSimulation.getCarte(), donneesSimulation.getIncendies(), donneesSimulation.getRbotos(), sim);
+            ChefPompier chef = new ChefPompier(sim);
             sim.setChefPompier(chef); // Injecter ChefPompier dans Simulateur
 
             

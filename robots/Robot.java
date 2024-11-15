@@ -19,6 +19,7 @@ public abstract class Robot{
     private int temps_decharge;       // Temps qu'il faut pour verser la quantité d'eau pour une extinction (en s)
     private int etat_reservoir;       // Etat actuel du reservoir entre 0 et capacité reservoir (en L)
     private Case position;            // Position courante du robot
+    private Case focusArea;           // Position du feu sur lequel il est focus en ce moment (destination du trajet qu'il effectue en ce moment, ou case actuelle s'il ne bouge pas actuellement)
 
     private NatureTerrain terrainsAcc[];
 
@@ -35,6 +36,7 @@ public abstract class Robot{
         this.etat_reservoir = etat_reservoir;
         this.position = position;
         this.terrainsAcc = terrainsAcc;
+        this.focusArea = null; // Aucune case focus par défaut
     }
 
     /////////// getter ///////////
@@ -97,11 +99,16 @@ public abstract class Robot{
     */
     public abstract double getVitesse(NatureTerrain actu);
 
+    public Case getFocusArea() {
+        return this.focusArea;
+    }
+
     /////////// autre methodes ///////////
 
 
-    public void setEtat(Etat etat){
+    public void setEtat(Etat etat, Case focus){
         this.state = etat;
+        this.focusArea = focus;
     }
     /** methode pour dire si la case coordonnee est accessible au robot
      * @param coordonnee :case a verifirer */
@@ -150,7 +157,7 @@ public abstract class Robot{
     public void setReservoir(int vol)throws RobotIllegalVolException{
         if(vol > this.etat_reservoir || vol<0) throw new RobotIllegalVolException("le volume "+ vol + "est superieur à la capacité du reservoir  ou negatif!\n");
 
-        this.etat_reservoir = etat_reservoir - vol;
+        this.etat_reservoir = vol;
     }
 
     
@@ -303,7 +310,7 @@ public abstract class Robot{
         } 
         DeverserEauRobotEvenement deverser = new DeverserEauRobotEvenement(this, sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge(), sim.getDonneesSimulation(),sim);
         sim.addEvenement(deverser);
-        ChangerStatutRobotEvenement etat = new ChangerStatutRobotEvenement(this, Etat.LIBRE, sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge()+10,sim);
+        ChangerStatutRobotEvenement etat = new ChangerStatutRobotEvenement(this, Etat.LIBRE, incendie.getPosition(), sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge()+10,sim);
         sim.addEvenement(etat);
         }
     }

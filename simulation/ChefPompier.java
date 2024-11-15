@@ -13,27 +13,51 @@ import robots.Etat;
 import robots.Robot;
 
 public class ChefPompier {
-    private Carte carte;
-    private ArrayList<Robot> robots;
-    private HashMap<Case, Incendie> incendies;
     private Simulateur sim;
 
-    public ChefPompier(Carte carte, HashMap<Case, Incendie> incendies, ArrayList<Robot> robots, Simulateur sim) {
-        this.carte = carte;
-        this.robots = robots;
-        this.incendies = incendies;
+    public ChefPompier(Simulateur sim) {
         this.sim =sim;
     }   
 
     public void resolution() {
-        PriorityQueue<Incendie> feu = new PriorityQueue<>();  
+        DonneesSimulation donnees_sim = sim.getDonneesSimulation();
 
-        for (Incendie incendie : incendies.values()) {
+        /*PriorityQueue<Incendie> feu = new PriorityQueue<Incendie>(); // On crée une file de priorité où les plus gros incendies sont prioritaires 
+
+        for (Incendie incendie : donnees_sim.getIncendies().values()) {
             feu.add(incendie);
+        }*/
+
+        
+        for(Incendie i : donnees_sim.getIncendies().values()) {
+            boolean isThisFeuHandled = false;
+            ArrayList<Robot> robots_sim = donnees_sim.getRobots();
+            ArrayList<Integer> id_robots_occupes = new ArrayList<Integer>();
+
+            for (int j = 0; j < robots_sim.size() && !isThisFeuHandled; j++) {
+                if(robots_sim.get(j).getFocusArea() != null)
+                    isThisFeuHandled = (robots_sim.get(j).getFocusArea().equals(i.getPosition()) && robots_sim.get(j).getEtat().equals(Etat.OCCUPE));
+                if(robots_sim.get(j).getEtat().equals(Etat.LIBRE))
+                    id_robots_occupes.add(j);
+            }
+
+            if(!isThisFeuHandled && id_robots_occupes.size() > 0) { // Si le feu n'est pas géré et qu'il y a des robots libres
+                int id_robot_a_envoyer = id_robots_occupes.get(0);
+                Chemin chemin_robot_a_envoyer = robots_sim.get(id_robot_a_envoyer).dijkstra(donnees_sim.getCarte(), i.getPosition());
+                for(int j = 1; j < id_robots_occupes.size(); j++) {
+                    Chemin buff_chemin = robots_sim.get(j).dijkstra(donnees_sim.getCarte(), i.getPosition());
+                    if(buff_chemin.getTempsTrajet() < chemin_robot_a_envoyer.getTempsTrajet()) { // Si on a trouvé un trajet plus rapide avec un autre robot on préférera ce dernier
+                        id_robot_a_envoyer = j;
+                        chemin_robot_a_envoyer = buff_chemin;
+                    }
+                }
+
+                robots_sim.get(id_robot_a_envoyer).mkevent(i, chemin_robot_a_envoyer, sim); // On envoie finalement le bon robot
+            }
+
         }
 
-
-        for (Robot robot : robots) {
+        /*for (Robot robot : robots) {
             System.out.println(robot.getEtat());
             if (feu.peek() != null){
                 boolean incendieAffecte = false;
@@ -42,7 +66,7 @@ public class ChefPompier {
                         Chemin chem = robot.dijkstra(carte, incendie.getPosition());
                         if (chem != null) {
                             incendieAffecte = true;
-                            robot.setEtat(Etat.OCCUPE);
+                            robot.setEtat(Etat.OCCUPE, null);
                             robot.mkevent(incendie, chem, sim);
                             
                         } else {
@@ -52,8 +76,7 @@ public class ChefPompier {
                     System.out.println("Aucun robot libre ou disponible pour l'incendie à la position : " + incendie.getPosition());
                 }
             }
-        }
+        }*/
     }
     
-}
 }
