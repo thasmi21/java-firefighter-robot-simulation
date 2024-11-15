@@ -1,4 +1,7 @@
 package simulation;
+
+import java.util.Objects;
+
 public abstract class Evenement implements Comparable<Evenement> {
     
     private long date; // Date en secondes à laquelle l'événement doit être exécuté
@@ -25,6 +28,15 @@ public abstract class Evenement implements Comparable<Evenement> {
     */
     public int compareTo(Evenement e) {
         return (int) (this.date - e.getDate()); // La troncature en int n'est pas grave car les événements ne seront jamais trop espacés à priori
+    }
+
+    @Override public String toString() {
+        return "Evénement à la date "+this.date;
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(this.date);
     }
 
 }

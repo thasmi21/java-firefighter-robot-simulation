@@ -1,6 +1,9 @@
 package simulation;
 import robots.Robot;
 import robots.Etat;
+
+import java.util.Objects;
+
 import map.Case;
 
 public class ChangerStatutRobotEvenement extends Evenement {
@@ -23,4 +26,13 @@ public class ChangerStatutRobotEvenement extends Evenement {
         sim.getChefPompier().resolution();
     }
 
+    @Override
+    public String toString(){
+        return "ChangerStatutRobotEvenement concernant le robot en "+this.robot.getType()+" pour l'état "+this.etat+" en focusant "+this.focus;
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(super.hashCode(), this.robot.hashCode(), this.etat.hashCode(), this.focus.hashCode(), this.sim.hashCode());
+    }
 }

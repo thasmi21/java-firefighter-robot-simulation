@@ -1,6 +1,7 @@
 package simulation;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 //import java.util.Map;
 //import java.util.PriorityQueue;
 import java.util.PriorityQueue;
@@ -21,13 +22,6 @@ public class ChefPompier {
 
     public void resolution() {
         DonneesSimulation donnees_sim = sim.getDonneesSimulation();
-
-        /*PriorityQueue<Incendie> feu = new PriorityQueue<Incendie>(); // On crée une file de priorité où les plus gros incendies sont prioritaires 
-
-        for (Incendie incendie : donnees_sim.getIncendies().values()) {
-            feu.add(incendie);
-        }*/
-
         
         for(Incendie i : donnees_sim.getIncendies().values()) {
             boolean isThisFeuHandled = false;
@@ -56,27 +50,15 @@ public class ChefPompier {
             }
 
         }
+    }
 
-        /*for (Robot robot : robots) {
-            System.out.println(robot.getEtat());
-            if (feu.peek() != null){
-                boolean incendieAffecte = false;
-                    if (robot.getEtatReservoir() > 0 && robot.getEtat() == Etat.LIBRE) {
-                        Incendie incendie = feu.poll();
-                        Chemin chem = robot.dijkstra(carte, incendie.getPosition());
-                        if (chem != null) {
-                            incendieAffecte = true;
-                            robot.setEtat(Etat.OCCUPE, null);
-                            robot.mkevent(incendie, chem, sim);
-                            
-                        } else {
-                            System.out.println("Aucun chemin trouvé pour le robot vers l'incendie à la position : " + incendie.getPosition());
-                        }
-                    if (!incendieAffecte) {
-                    System.out.println("Aucun robot libre ou disponible pour l'incendie à la position : " + incendie.getPosition());
-                }
-            }
-        }*/
+    @Override public String toString() {
+        return "Je suis le robot pompier associé à la simulation "+this.sim;
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(this.sim.hashCode());
     }
     
 }

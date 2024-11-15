@@ -1,5 +1,7 @@
 package map;
 
+import java.util.Objects;
+
 public class Incendie implements Comparable<Incendie> {
     Case position;
     int vol_exctinction;
@@ -29,5 +31,10 @@ public class Incendie implements Comparable<Incendie> {
     @Override
     public int compareTo(Incendie other) {
         return Integer.compare(other.getVolExtinction(), this.vol_exctinction); // Priorité au feu le plus grand
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(this.position.hashCode(), this.vol_exctinction);
     }
 }

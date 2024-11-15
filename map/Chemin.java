@@ -1,5 +1,6 @@
 package map;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Cette classe <b>définit les chemins</b> en associant le déplacement d'un robot sur une case avec un système de date permettant 
@@ -62,4 +63,8 @@ public class Chemin{
         return (sb + tm).toString();
     }
 
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(this.chemin.hashCode(), this.dates.hashCode(), this.longueurChemin, this.tempsTrajet);
+    }
 }

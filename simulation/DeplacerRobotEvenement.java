@@ -1,6 +1,9 @@
 package simulation;
 import robots.Robot;
 import map.Case;
+
+import java.util.Objects;
+
 import exceptions.*;
 
 public class DeplacerRobotEvenement extends Evenement {
@@ -26,6 +29,16 @@ public class DeplacerRobotEvenement extends Evenement {
         } catch(RobotIllegalPosException e) {
             System.out.println(e); // Sinon on affiche l'erreur
         }
+    }
+
+    @Override
+    public String toString() {
+        return "DeplacerRobotEvenement["+this.getDate()+"] concernant le robot en "+this.robot.getType()+" vers la position "+this.coord;
+    }
+    
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(super.hashCode(), this.robot.hashCode(), this.coord.hashCode());
     }
 
 }

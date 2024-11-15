@@ -2,6 +2,8 @@ package robots;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
+
 import map.*;
 //import simulation.Evenement;
 import exceptions.*;
@@ -15,8 +17,8 @@ public abstract class Robot{
     private double vitesse_de_base ;  // Vitesse de déplacement du robot lue dans le fichier (km/h)
     private int capacite_reservoir;   // Capacité max du reservoir (en L)
     private int temps_recharge;       // Temps pour recharger completement le reservoir (s)
-    private int decremente_reservoir; // Quantité déversée pour une extinction (en L)
     private int temps_decharge;       // Temps qu'il faut pour verser la quantité d'eau pour une extinction (en s)
+    private int decremente_reservoir; // Quantité déversée pour une extinction (en L)
     private int etat_reservoir;       // Etat actuel du reservoir entre 0 et capacité reservoir (en L)
     private Case position;            // Position courante du robot
     private Case focusArea;           // Position du feu sur lequel il est focus en ce moment (destination du trajet qu'il effectue en ce moment, ou case actuelle s'il ne bouge pas actuellement)
@@ -313,6 +315,15 @@ public abstract class Robot{
         ChangerStatutRobotEvenement etat = new ChangerStatutRobotEvenement(this, Etat.LIBRE, incendie.getPosition(), sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge()+10,sim);
         sim.addEvenement(etat);
         }
+    }
+
+    @Override public String toString() {
+        return "Je suis un robot de type "+this.type+" et mon identifiant est "+this;
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(this.type.hashCode(), this.state.hashCode(), this.vitesse_max, this.vitesse_de_base, this.capacite_reservoir, this.temps_decharge, this.temps_decharge, this.decremente_reservoir, this.etat_reservoir, this.position.hashCode(), this.focusArea.hashCode());
     }
 }
 

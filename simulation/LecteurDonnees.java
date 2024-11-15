@@ -166,7 +166,7 @@ public class LecteurDonnees {
 
     /**
      * Lit et affiche les donnees du i-eme robot.
-     * @param i
+     * @param i numéro du robot à lire
      */
     private Robot lireRobot(int i) throws DataFormatException {
         ignorerCommentaires();

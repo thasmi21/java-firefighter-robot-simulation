@@ -1,4 +1,6 @@
 package map;
+import java.util.Objects;
+
 import exceptions.CarteHorsCarteException;
 /**
  * Cette classe <b>définit la carte</b> et comporte les méthodes pour gérer dynamiquement les cases qui la composent.
@@ -199,5 +201,10 @@ public class Carte {
     /** Renvoie une description textuelle générale de la carte */
     @Override public String toString() {
         return "Cette instance de carte possède "+this.cases.length+" lignes et "+this.cases[0].length+" colonnes. Chacune de ses cases ont une taille de "+this.tailleCases+"m.\n";
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(this.cases.hashCode(), this.tailleCases);
     }
 }

@@ -12,6 +12,8 @@ import gui.Oval;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
+
 import exceptions.CarteHorsCarteException;
 
 public class DonneesSimulation {
@@ -41,18 +43,24 @@ public class DonneesSimulation {
         }
         return waterTile;
     }
+
+    /** Retourne l'ensemble des cases constituées d'eau de la simulation */
     public ArrayList<Case> getWaterTiles() {
         return this.watertiles;
     }
 
+    /** Renvoie la carte courante de la simulation */
     public Carte getCarte() {
         return this.carte;
     }
 
+
+    /** Renvoie l'ensemble des robots de la simulation */
     public ArrayList<Robot> getRobots() {
         return this.robots;
     }
 
+    /** Renvoie l'ensemble des incendies de la carte sous la forme d'une HashMap où les clées sont les cases et les valeurs les incendies */
     public HashMap<Case, Incendie> getIncendies() {
         return this.incendies;
     }
@@ -126,5 +134,14 @@ public class DonneesSimulation {
             case HABITAT :return "tiles/HABITAT.png";
             default: return "tiles/TERRAIN_LIBRE.png";
         }
+    }
+
+    @Override public String toString() {
+        return "Données de simulation contenant 1 carte, "+this.robots.size()+" robots, "+this.incendies.size()+" incendies et "+this.watertiles.size()+" cases d'eau.";
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(this.carte.hashCode(), this.robots.hashCode(), this.incendies.hashCode(), this.watertiles.hashCode());
     }
 }

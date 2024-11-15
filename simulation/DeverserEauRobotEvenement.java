@@ -1,4 +1,6 @@
 package simulation;
+import java.util.Objects;
+
 import map.Incendie;
 import robots.Robot;
 
@@ -37,6 +39,16 @@ public class DeverserEauRobotEvenement extends Evenement {
             RechargerEauRobotEvenement eau = new RechargerEauRobotEvenement(robot,donneesSimulation.getWaterTiles(),donneesSimulation.getCarte(),sim,sim.getDateSimulation());
             sim.addEvenement(eau);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "DeverserEauRobotEvenement["+this.getDate()+"] concernant le robot en "+this.robot.getType();
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(super.hashCode(), this.robot.hashCode(), this.donneesSimulation.hashCode(), this.sim.hashCode());
     }
 
 }

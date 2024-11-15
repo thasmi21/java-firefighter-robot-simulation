@@ -1,4 +1,5 @@
 package simulation;
+import java.util.Objects;
 import java.util.PriorityQueue;
 
 import gui.GUISimulator;
@@ -81,19 +82,24 @@ public class Simulateur implements Simulable {
     }
 
     /** On redémarre la simulation en effaçant tout */
-
     public void restart() {
         this.dateSimulation = 0;
-        this.evenements = new PriorityQueue<Evenement>();
+        this.evenements.clear();
         try {
-            DonneesSimulation donneesSimulation = LecteurDonnees.lire(nomF);
-            donneesSimulation.afficherCarte(gui);
+            this.donneesSimulation = LecteurDonnees.lire(nomF);
+            this.donneesSimulation.afficherCarte(gui);
+            this.chefPompier = new ChefPompier(this);
         } catch (Exception e) {}
     }
 
     @Override
     public String toString(){
         return "Ce simulateur possède "+this.evenements.size()+" événement(s) en attente. Il est actuellement à la date : "+this.dateSimulation;
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+        return Objects.hash(this.dateSimulation, this.evenements.hashCode(), this.gui.hashCode(), this.donneesSimulation.hashCode(), this.nomF.hashCode(), this.chefPompier.hashCode());
     }
 }
 
