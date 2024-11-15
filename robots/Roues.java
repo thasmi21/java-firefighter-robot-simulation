@@ -1,6 +1,9 @@
 package robots;
+import java.util.ArrayList;
+
 import exceptions.*;
 import map.*;
+import simulation.Simulateur;
 
 public class Roues extends Robot{
 
@@ -21,10 +24,11 @@ public class Roues extends Robot{
 
     /** Recharge le résevoir du robot en respectant ses caractéristiques
      * @param carte :carte sur lequel le robot s'exécute */
-    public void rechargerReservoir(Carte carte) throws RobotIllegalPosException {
+    public void rechargerReservoir(ArrayList<Case>  watertiles,Carte carte, Simulateur sim) throws RobotIllegalPosException {
         int verifEau=0;
 
         //Vérifie qu'il y a bien une case eau autours de lui, sinon lève une exception
+        /* 
         try{
             if (carte.getVoisin(this.getPosition(), Direction.NORD).getNature()==NatureTerrain.EAU){verifEau=1;}
             else if (carte.getVoisin(this.getPosition(), Direction.SUD).getNature()==NatureTerrain.EAU){verifEau=1;}
@@ -37,7 +41,7 @@ public class Roues extends Robot{
         if (verifEau!=1){ //Lève une exception si aucune des 4 cases autours du robot n'est de l'eau
             throw new IndexOutOfBoundsException("Le robot n'est pas autorisé à remplir son réservoir sur cette case.\n");
         }
-
+*/
         //Remplie le résevoir à la capacité maximale de ce type de robot = 5000L
         try {
             this.setReservoir(this.getCapaciteReservoir());

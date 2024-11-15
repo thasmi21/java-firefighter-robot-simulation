@@ -1,6 +1,10 @@
 package robots;
+import java.util.ArrayList;
+
+import map.Carte;
 import map.Case;
 import map.NatureTerrain;
+import simulation.Simulateur;
 
 public class Pattes extends Robot{
 
@@ -23,5 +27,9 @@ public class Pattes extends Robot{
     public int deverserEau() {
         // Il n'y a pas d'actualisation de l'état du réservoir à faire car il est considéré de taille infinie
         return this.getDechargeReservoir(); // On se contente donc de renvoyer le volume de poudre déversé
+    }
+
+    public void rechargerReservoir(ArrayList<Case>  watertiles,Carte carte, Simulateur sim){
+
     }
 }

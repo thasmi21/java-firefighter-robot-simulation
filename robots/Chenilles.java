@@ -4,7 +4,11 @@ import exceptions.RobotIllegalVolException;
 import map.Case;
 import map.Carte;
 import map.NatureTerrain;
+import simulation.Simulateur;
 import map.Direction;
+
+import java.util.ArrayList;
+
 import exceptions.CarteHorsCarteException;
 
 public class Chenilles extends Robot{
@@ -29,7 +33,7 @@ public class Chenilles extends Robot{
 
     /** Recharge le résevoir du robot en respectant ses caractéristiques
      * @param carte :carte sur lequel le robot s'exécute */
-    public void rechargerReservoir(Carte carte) throws RobotIllegalPosException {
+    public void rechargerReservoir(ArrayList<Case>  watertiles,Carte carte, Simulateur sim) throws RobotIllegalPosException {
         int verifEau=0;
 
         //Vérifie qu'il y a bien une case eau autours de lui, sinon lève une exception

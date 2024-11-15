@@ -1,8 +1,10 @@
 package robots;
+import java.util.ArrayList;
+
 import exceptions.*;
-import map.Carte;
-import map.Case;
-import map.NatureTerrain;
+import map.*;
+import simulation.DeplacerRobotEvenement;
+import simulation.Simulateur;
 
 public class Drone extends Robot {
 
@@ -16,13 +18,26 @@ public class Drone extends Robot {
 
     /** Recharge le résevoir du robot en respectant ses caractéristiques
      * @param carte :carte sur lequel le robot s'exécute */
-    public void rechargerReservoir(Carte carte) throws RobotIllegalPosException {
+    public void rechargerReservoir(ArrayList<Case>  watertiles,Carte carte, Simulateur sim) throws RobotIllegalPosException {
+        int shortestDistance = Integer.MAX_VALUE;
+        Case nearestWaterTile = null;
 
-        //Vérifie qu'il y a bien une case EAU en dessous de lui, sinon lève une exception    
-        NatureTerrain caseActuelle = this.getPosition().getNature();
-        if (caseActuelle != NatureTerrain.EAU){ 
-            throw new IndexOutOfBoundsException("Le robot n'est pas autorisé à remplir son réservoir sur cette case.\n");
+        for (Case waterTile : watertiles) {
+            int distance = this.dijkstra(carte, waterTile).getlongueurChemin(); // Méthode pour obtenir la distance via Dijkstra
+    
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+                nearestWaterTile = waterTile;
+            }
         }
+        System.out.println(nearestWaterTile);
+        Chemin chem = this.dijkstra(carte, nearestWaterTile);
+        while(chem.getChemin().size() !=0){
+            Case actuelle = chem.getChemin().remove(0);
+            long date = chem.getDates().remove(0);
+            DeplacerRobotEvenement e = new DeplacerRobotEvenement(this, actuelle, sim.getDateSimulation() + date);
+            sim.addEvenement(e);
+        } 
         
         //Remplie le résevoir à la capacité maximale de ce type de robot = 10 000L
         try {

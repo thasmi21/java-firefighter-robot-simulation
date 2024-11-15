@@ -18,9 +18,9 @@ TERRAIN_LIBRE
 
 # Incendies
 1
-0 0 50000 
+0 0 500 
 
 	
 # Robots
 1
-0 1 DRONE
+2 2 DRONE

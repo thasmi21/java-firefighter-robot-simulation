@@ -1,5 +1,6 @@
 package map;
-public class Incendie {
+
+public class Incendie implements Comparable<Incendie> {
     Case position;
     int vol_exctinction;
 
@@ -25,4 +26,8 @@ public class Incendie {
         return this.vol_exctinction;
     }
 
+    @Override
+    public int compareTo(Incendie other) {
+        return Integer.compare(other.getVolExtinction(), this.vol_exctinction);
+    }
 }

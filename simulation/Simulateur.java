@@ -9,23 +9,42 @@ public class Simulateur implements Simulable {
     private long dateSimulation;         // Les date avancent par pas de 1 unité arbitraire de temps (une unité = 1)
     PriorityQueue<Evenement> evenements; // Liste des événements triés par ordre de priorité
     GUISimulator gui;                    // Référence de la GUI associée à la simulation
+    private DonneesSimulation donneesSimulation;
+    private String nomF;
+    private ChefPompier chefPompier;
 
-    
+
+
     /** Construit le simulateur, <b>initialise la date de début de simulation à 0</b> et lie une GUI à ce simulateur 
      * @param gui Référence vers une instance de GUISimulator déjà existante
     */
-    public Simulateur(GUISimulator gui) {
+    public Simulateur(GUISimulator gui,DonneesSimulation donneesSimulation,String nomF) {
         this.dateSimulation = 0;
         this.evenements = new PriorityQueue<Evenement>();
         this.gui = gui; // Passage par référence à une GUI déjà existante
         gui.setSimulable(this);
+        this.donneesSimulation = donneesSimulation;
+        this.nomF = nomF;
     }
 
+
+    
+    public void setChefPompier(ChefPompier chef) {
+        this.chefPompier = chef;
+    }
+
+    public ChefPompier getChefPompier() {
+        return this.chefPompier;
+    }
+
+    public DonneesSimulation getDonneesSimulation() {
+        return donneesSimulation;
+    }
 
     public long getDateSimulation(){
         return dateSimulation;
     }
-    
+
     /** Ajoute l'événement e dans la file de priorité 
      * @param e Événement à ajouter dans la file
     */
@@ -42,14 +61,12 @@ public class Simulateur implements Simulable {
     public boolean simulationTerminee() {
         return this.dateSimulation > 0 && this.evenements.isEmpty();
     }
-
     
     /** Gère la prochaine étape de simulation : <b>incrémentation de la date de simulation</b>, <b>traitement des événements</b> dans l'ordre des dates, vérification de fin de simulation, etc. */
     
     public void next()
     {
         this.incrementeDate();
-
         //long date_evt = -1; // Date de l'événement courant (pour vérifier si on doit l'exécuter et si on doit continuer le parcours de la file)
         Evenement curr_evt = null;
         while((curr_evt = this.evenements.peek()) != null && curr_evt.getDate() <= this.dateSimulation){
@@ -58,10 +75,9 @@ public class Simulateur implements Simulable {
         }
 
         if(this.simulationTerminee()){
-            System.out.println("fin de la simulation");
         }
 
-        /* Partie graphique : changer la GUI */
+        donneesSimulation.afficherCarte(gui);
     }
 
     /** On redémarre la simulation en effaçant tout */
@@ -69,8 +85,10 @@ public class Simulateur implements Simulable {
     public void restart() {
         this.dateSimulation = 0;
         this.evenements = new PriorityQueue<Evenement>();
-        //DonneesSimulation donneesSimulation = LecteurDonnees.lire(DonneesOriginale);
-        //donneesSimulation.afficherCarte(gui);
+        try {
+            DonneesSimulation donneesSimulation = LecteurDonnees.lire(nomF);
+            donneesSimulation.afficherCarte(gui);
+        } catch (Exception e) {}
     }
 
     @Override

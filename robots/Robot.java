@@ -2,8 +2,6 @@ package robots;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-//import java.util.PriorityQueue;
-
 import map.*;
 //import simulation.Evenement;
 import exceptions.*;
@@ -144,9 +142,7 @@ public abstract class Robot{
     }
 
     /** Méthode pour remplir le reservoir **/
-    public  void rechargerReservoir() {
-        this.etat_reservoir = this.capacite_reservoir;
-    }
+    public  abstract void rechargerReservoir(ArrayList<Case>  watertiles,Carte carte,Simulateur sim)throws RobotIllegalPosException;
     
     /** Méthode pour déduire la quantité vol du réservoir
      * @param vol Volume à déduire du réservoir
@@ -305,9 +301,9 @@ public abstract class Robot{
             DeplacerRobotEvenement e = new DeplacerRobotEvenement(this, actuelle, sim.getDateSimulation() + date);
             sim.addEvenement(e);
         } 
-        DeverserEauRobotEvenement deverser = new DeverserEauRobotEvenement(this, sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge(), sim.getDonneesSimulation());
-        ChangerStatutRobotEvenement etat = new ChangerStatutRobotEvenement(this, Etat.OCCUPE, sim.getDateSimulation() + this.getTempsDecharge());
+        DeverserEauRobotEvenement deverser = new DeverserEauRobotEvenement(this, sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge(), sim.getDonneesSimulation(),sim);
         sim.addEvenement(deverser);
+        ChangerStatutRobotEvenement etat = new ChangerStatutRobotEvenement(this, Etat.LIBRE, sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge()+10,sim);
         sim.addEvenement(etat);
         }
     }

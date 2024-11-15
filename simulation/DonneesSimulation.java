@@ -18,11 +18,31 @@ public class DonneesSimulation {
     private Carte carte;
     private ArrayList<Robot> robots;
     private HashMap<Case, Incendie> incendies;
+    private ArrayList<Case> watertiles;
 
-    public DonneesSimulation(Carte carte, HashMap<Case, Incendie> incendies, ArrayList<Robot> robots) {
+    public DonneesSimulation(Carte carte, HashMap<Case, Incendie> incendies, ArrayList<Robot> robots,ArrayList<Case> watertiles) {
         this.carte = carte;
         this.robots = robots;
         this.incendies = incendies;
+        this.watertiles = remplirWaterTile();
+    }       
+    
+    private ArrayList<Case> remplirWaterTile(){
+        ArrayList<Case> waterTile = new ArrayList<>();
+        for(int i = 0; i<carte.getNbColonnes(); i++){ 
+            for(int k =0; k< carte.getNbLignes(); k++){
+                try {
+                    Case currentCase = carte.getCase(i, k);
+                    if (currentCase.equalsEAU()) {
+                        waterTile.add(currentCase);
+                    }
+                    } catch (Exception e) {}
+            }
+        }
+        return waterTile;
+    }
+    public ArrayList<Case> getWaterTiles() {
+        return this.watertiles;
     }
 
     public Carte getCarte() {
