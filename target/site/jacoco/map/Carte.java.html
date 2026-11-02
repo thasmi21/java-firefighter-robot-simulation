@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Carte.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">projet-java-poo</a> &gt; <a href="index.source.html" class="el_package">map</a> &gt; <span class="el_source">Carte.java</span></div><h1>Carte.java</h1><pre class="source lang-java linenums">package map;
+import java.util.Objects;
+
+import exceptions.CarteHorsCarteException;
+/**
+ * Cette classe &lt;b&gt;définit la carte&lt;/b&gt; et comporte les méthodes pour gérer dynamiquement les cases qui la composent.
+ * Elle &lt;b&gt;contient des méthodes utiles en phase de debug&lt;/b&gt; pour l'affichage pour un affichage simplifié en console notamment.
+ * 
+ * 
+ */
+public class Carte {
+
+<span class="fc" id="L13">    private static int TAILLE_PAR_DEFAUT = 1;</span>
+ 
+    private Case cases[][];  // Tableau n x m de cases
+    private int tailleCases; // Taille du côté des cases
+
+    /** Construit la carte de cases &lt;b&gt;non attribuées&lt;/b&gt; dans le format spécifié (la taille des cases de la carte est &lt;b&gt;la taille par défaut&lt;/b&gt;)
+     * @param nbLignes Nombre de lignes de la carte
+     * @param nbColonnes Nombre de colonnes de la carte
+    */
+<span class="fc" id="L22">    public Carte(int nbLignes, int nbColonnes) { </span>
+<span class="fc" id="L23">        this.tailleCases = TAILLE_PAR_DEFAUT;</span>
+<span class="fc" id="L24">        this.cases = new Case[nbLignes][nbColonnes];</span>
+<span class="fc" id="L25">    }</span>
+
+    /** Construit la carte de cases &lt;b&gt;non attribuées&lt;/b&gt; dans le format spécifié 
+     * @param nbLignes Nombre de lignes de la carte
+     * @param nbColonnes Nombre de colonnes de la carte
+     * @param tailleCases Taille des cases de la carte
+    */
+<span class="fc" id="L32">    public Carte(int nbLignes, int nbColonnes, int tailleCases) {</span>
+<span class="fc" id="L33">        this.tailleCases = tailleCases;</span>
+<span class="fc" id="L34">        this.cases = new Case[nbLignes][nbColonnes];</span>
+<span class="fc" id="L35">    }</span>
+
+    /** Construit la carte à partir d'&lt;b&gt;une copie&lt;/b&gt; d'un tableau de cases déjà existant (la taille des cases de la carte est &lt;b&gt;la taille par défaut&lt;/b&gt;)
+     * @param case_tab Tableau de case d'origine
+    */
+<span class="nc" id="L40">    public Carte(Case case_tab[][]) { </span>
+<span class="nc" id="L41">        this.tailleCases = TAILLE_PAR_DEFAUT;</span>
+<span class="nc" id="L42">        this.cases = new Case[case_tab.length][case_tab[0].length];</span>
+
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        for(int lig =  0; lig &lt; case_tab.length; lig++)</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            for(int col = 0; col &lt; case_tab[0].length; col++)</span>
+<span class="nc" id="L46">                this.cases[lig][col] = new Case(lig, col, case_tab[lig][col].getNature());</span>
+<span class="nc" id="L47">    }</span>
+
+    /** Construit la carte à partir d'&lt;b&gt;une copie&lt;/b&gt; d'un tableau de cases déjà existant
+     * @param case_tab Tableau de cases d'origine
+     * @param tailleCases Taille des cases de la carte
+    */
+<span class="nc" id="L53">    public Carte(Case case_tab[][], int tailleCases) { </span>
+<span class="nc" id="L54">        this.tailleCases = tailleCases;</span>
+<span class="nc" id="L55">        this.cases = new Case[case_tab.length][case_tab[0].length];</span>
+
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        for(int lig =  0; lig &lt; case_tab.length; lig++)</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            for(int col = 0; col &lt; case_tab[0].length; col++)</span>
+<span class="nc" id="L59">                this.cases[lig][col] = new Case(lig, col, case_tab[lig][col].getNature());</span>
+<span class="nc" id="L60">    }</span>
+
+
+    /* SETTERS */
+
+    /** Permet de d'attribuer &lt;b&gt;une copie&lt;/b&gt; de la case souhaitée à l'emplacement de cette case sur la carte s'il existe
+     *  @param c   Case à attribuer à l'emplacement souhaité
+     *  @exception CarteHorsCarteException Lève une exception CarteHorsCarteException si l'emplacement n'existe pas sur la carte
+    */
+    public void setCase(Case c) throws CarteHorsCarteException
+    {
+<span class="nc" id="L71">        int lig = c.getLigne();</span>
+<span class="nc" id="L72">        int col = c.getColonne();</span>
+<span class="nc bnc" id="L73" title="All 8 branches missed.">        if (lig &lt; 0 || lig &gt;= this.cases.length || col &lt; 0 || col &gt;= this.cases[0].length)</span>
+<span class="nc" id="L74">            throw new CarteHorsCarteException(&quot;La case de coordonnées (&quot;+lig+&quot;;&quot;+col+&quot;) n'existe pas !\n&quot;);</span>
+
+<span class="nc" id="L76">        this.cases[lig][col] = new Case(c.getLigne(), c.getColonne(), c.getNature());</span>
+<span class="nc" id="L77">    }</span>
+
+    /** Permet de d'attribuer à la case d'emplacement (lig,col) (&lt;b&gt;s'il existe&lt;/b&gt;) sur la carte une case avec les paramètres spécifiés en argument
+     *  @param lig Ligne de la case concernée
+     *  @param col Colonne de la case concernée
+     *  @param nature Nature du terrain de la case concernée
+     *  @exception CarteHorsCarteException Lève une exception CarteHorsCarteException si l'emplacement n'existe pas sur la carte
+    */
+    public void setCase(int lig, int col, NatureTerrain nature) throws CarteHorsCarteException
+    {
+<span class="pc bpc" id="L87" title="2 of 8 branches missed.">        if (lig &lt; 0 || lig &gt;= this.cases.length || col &lt; 0 || col &gt;= this.cases[0].length)</span>
+<span class="fc" id="L88">            throw new CarteHorsCarteException(&quot;La case de coordonnées (&quot;+lig+&quot;;&quot;+col+&quot;) n'existe pas !\n&quot;);</span>
+
+<span class="fc" id="L90">        this.cases[lig][col] = new Case(lig, col, nature);</span>
+<span class="fc" id="L91">    }</span>
+
+    /* GETTERS */
+
+    /** Renvoie le nombre de lignes de la carte */
+    public int getNbLignes() {
+<span class="fc" id="L97">        return this.cases.length;</span>
+    }
+
+    /** Renvoie le nombre de colonnes de la carte */
+    public int getNbColonnes() {
+<span class="fc" id="L102">        return this.cases[0].length;</span>
+    }
+
+    /** Renvoie la taille des cases de la carte */
+    public int getTailleCases() {
+<span class="fc" id="L107">        return this.tailleCases;</span>
+    }
+
+    /** Permet de récupérer &lt;b&gt;une copie&lt;/b&gt; de la case 
+     * @param lig Ligne de la case concernée
+     * @param col Colonne de la case concernée
+     * @exception CarteHorsCarteException Lève une exception de type ArrayIndexOutOfBoundsException si la case concernée n'existe pas sur la carte
+    */
+    public Case getCase(int lig, int col) throws CarteHorsCarteException {
+<span class="pc bpc" id="L116" title="2 of 8 branches missed.">        if (lig &lt; 0 || lig &gt;= this.cases.length || col &lt; 0 || col &gt;= this.cases[0].length)</span>
+<span class="fc" id="L117">            throw new CarteHorsCarteException(&quot;La case de coordonnées (&quot;+lig+&quot;;&quot;+col+&quot;) n'existe pas !\n&quot;);</span>
+        
+<span class="fc" id="L119">        return this.cases[lig][col];</span>
+    }
+
+    /** Permet de déterminer si une case voisine visée de puis une case d'origine dans une direction donnée existe sur la carte ou non.
+     * Cette méthode renvoie &lt;b&gt;true&lt;/b&gt; si elle existe et &lt;b&gt;false&lt;/b&gt; sinon. 
+     * @param src Case d'origine 
+     *  @param dir Direction vers laquelle le voisin se situerait en partant de &lt;b&gt;src&lt;/b&gt;
+    */
+    public boolean voisinExiste(Case src, Direction dir) {
+        // On calcule la position de ce supposé voisin par rapport à la case source et la direction indiquée
+<span class="fc bfc" id="L129" title="All 4 branches covered.">        int lig_voisin_potentiel = (dir == Direction.NORD)  ? src.getLigne()   - 1 : (dir == Direction.SUD) ? src.getLigne()   + 1 : src.getLigne();</span>
+<span class="fc bfc" id="L130" title="All 4 branches covered.">        int col_voisin_potentiel = (dir == Direction.OUEST) ? src.getColonne() - 1 : (dir == Direction.EST) ? src.getColonne() + 1 : src.getColonne();</span>
+
+        // Et on vérifie que cette case se retrouve bien dans sur la carte, i.e pas de débordement
+<span class="fc bfc" id="L133" title="All 8 branches covered.">        return (lig_voisin_potentiel &gt;= 0) &amp;&amp; (lig_voisin_potentiel &lt; this.cases.length) &amp;&amp; (col_voisin_potentiel &gt;= 0) &amp;&amp; (col_voisin_potentiel &lt; this.cases[0].length);</span>
+    }
+
+    /** @param src Case d'origine 
+     *  @param dir Direction vers laquelle le voisin se situerait en partant de &lt;b&gt;src&lt;/b&gt;
+     *  @exception CarteHorsCarteException Lève une exception CarteHorsCarteException si la case du voisin n'existe pas sur la carte
+    */
+    public Case getVoisin(Case src, Direction dir) throws CarteHorsCarteException {
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if(!this.voisinExiste(src, dir)) throw new CarteHorsCarteException(&quot;La case de coordonnées (&quot;+src.getLigne()+&quot;;&quot;+src.getColonne()+&quot;) n'a pas de voisin dans la direction &quot;+dir.toString()+&quot; !\n&quot;);</span>
+
+<span class="nc bnc" id="L143" title="All 4 branches missed.">        int lig_voisin = (dir == Direction.NORD)  ? src.getLigne()   - 1 : (dir == Direction.SUD) ? src.getLigne()   + 1 : src.getLigne();</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">        int col_voisin = (dir == Direction.OUEST) ? src.getColonne() - 1 : (dir == Direction.EST) ? src.getColonne() + 1 : src.getColonne();</span>
+
+<span class="nc" id="L146">        return this.cases[lig_voisin][col_voisin];</span>
+    }
+
+    /** Permet l'&lt;b&gt;affichage graphique de la carte&lt;/b&gt; au &lt;b&gt;format texte&lt;/b&gt; sur la &lt;b&gt;sortie standard&lt;/b&gt; (System.out) */
+    public void afficheDebug() {
+<span class="nc" id="L151">        int nbLignes = this.cases.length;</span>
+<span class="nc" id="L152">        int nbColonnes = this.cases[0].length;</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        for(int x = 0; x &lt; nbColonnes; x++) {</span>
+<span class="nc" id="L155">            System.out.print(&quot; ____&quot;); </span>
+        }
+
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        for(int y = 0; y &lt; nbLignes; y++) {</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">            for(int i = 0; i &lt; 3; i++) {</span>
+<span class="nc" id="L160">                System.out.print(&quot;\n|&quot;);</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">                for(int x = 0; x &lt; nbColonnes; x++) {</span>
+<span class="nc bnc" id="L162" title="All 4 branches missed.">                    switch(i) {</span>
+                        case 0:
+<span class="nc" id="L164">                            System.out.print(&quot;    |&quot;);</span>
+<span class="nc" id="L165">                            break;</span>
+                        case 1:
+<span class="nc" id="L167">                            System.out.print(&quot; &quot;);</span>
+<span class="nc bnc" id="L168" title="All 6 branches missed.">                            switch(this.cases[y][x].getNature()) {</span>
+                                case TERRAIN_LIBRE:
+<span class="nc" id="L170">                                    System.out.print(&quot;TL&quot;);</span>
+<span class="nc" id="L171">                                    break;</span>
+                                case ROCHE:
+<span class="nc" id="L173">                                    System.out.print(&quot;Ro&quot;);</span>
+<span class="nc" id="L174">                                    break;</span>
+                                case EAU:
+<span class="nc" id="L176">                                    System.out.print(&quot;Ea&quot;);</span>
+<span class="nc" id="L177">                                    break;</span>
+                                case FORET:
+<span class="nc" id="L179">                                    System.out.print(&quot;Fo&quot;);</span>
+<span class="nc" id="L180">                                    break;</span>
+                                case HABITAT:
+<span class="nc" id="L182">                                    System.out.print(&quot;Ha&quot;);</span>
+<span class="nc" id="L183">                                    break;</span>
+                                default: // Si la case n'est pas assignée
+<span class="nc" id="L185">                                    System.out.print(&quot;~~&quot;);</span>
+                                    break;
+                            }
+<span class="nc" id="L188">                            System.out.print(&quot; |&quot;);</span>
+<span class="nc" id="L189">                            break;</span>
+                        case 2:
+<span class="nc" id="L191">                            System.out.print(&quot;____|&quot;);</span>
+                            break;
+                    }
+                }
+            }
+        }
+
+<span class="nc" id="L198">        System.out.println(&quot;\n&quot;); // On fait un double retour à la ligne</span>
+<span class="nc" id="L199">    }</span>
+
+    /** Renvoie une description textuelle générale de la carte */
+    @Override public String toString() {
+<span class="nc" id="L203">        return &quot;Cette instance de carte possède &quot;+this.cases.length+&quot; lignes et &quot;+this.cases[0].length+&quot; colonnes. Chacune de ses cases ont une taille de &quot;+this.tailleCases+&quot;m.\n&quot;;</span>
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+<span class="nc" id="L208">        return Objects.hash(this.cases.hashCode(), this.tailleCases);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

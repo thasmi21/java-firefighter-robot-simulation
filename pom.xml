@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.phelma</groupId>
+    <artifactId>projet-java-poo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!-- JUnit pour nos tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Bibliothèque graphique fournie avec le projet -->
+        <dependency>
+            <groupId>local</groupId>
+            <artifactId>gui</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/gui.jar</systemPath>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+    <plugins>
+
+        <!-- Compiler -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version>
+        </plugin>
+
+        <!-- JUnit -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.2</version>
+        </plugin>
+
+        <!-- JaCoCo -->
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.12</version>
+
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+
+                <execution>
+                    <id>report</id>
+                    <phase>test</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+
+        <!-- PIT -->
+        <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <version>1.17.3</version>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-junit5-plugin</artifactId>
+                    <version>1.2.1</version>
+                </dependency>
+            </dependencies>
+
+            <configuration>
+                <targetClasses>
+                    <param>map.*</param>
+                    <param>robots.*</param>
+                </targetClasses>
+
+                <targetTests>
+                    <param>map.*Test</param>
+                    <param>robots.*Test</param>
+                </targetTests>
+
+                <outputFormats>
+                    <param>HTML</param>
+                </outputFormats>
+            </configuration>
+        </plugin>
+
+    </plugins>
+</build>
+
+</project>

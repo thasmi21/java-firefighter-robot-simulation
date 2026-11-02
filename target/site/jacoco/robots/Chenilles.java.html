@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Chenilles.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">projet-java-poo</a> &gt; <a href="index.source.html" class="el_package">robots</a> &gt; <span class="el_source">Chenilles.java</span></div><h1>Chenilles.java</h1><pre class="source lang-java linenums">package robots;
+import exceptions.RobotIllegalPosException;
+import exceptions.RobotIllegalVolException;
+import map.Case;
+import map.Carte;
+import map.NatureTerrain;
+import simulation.Simulateur;
+import map.Direction;
+
+import java.util.ArrayList;
+
+import exceptions.CarteHorsCarteException;
+
+public class Chenilles extends Robot{
+
+    public Chenilles(double vitesse_de_base,Case position){
+<span class="nc" id="L17">        super(&quot;Chenille&quot;,Etat.LIBRE,22.2, vitesse_de_base, 2000, 300, 100, 8, 2000, position, new NatureTerrain[] {NatureTerrain.TERRAIN_LIBRE, NatureTerrain.FORET, NatureTerrain.HABITAT});</span>
+<span class="nc" id="L18">    }</span>
+
+
+    public double getVitesse(NatureTerrain actuelle){
+<span class="nc bnc" id="L22" title="All 4 branches missed.">        switch (actuelle) {</span>
+            case EAU:
+<span class="nc" id="L24">                return 0;</span>
+            case ROCHE:
+<span class="nc" id="L26">                return 0;</span>
+            case FORET: 
+<span class="nc" id="L28">                return getVitesseBase()/2;</span>
+            default:
+<span class="nc" id="L30">                return getVitesseBase();</span>
+        }
+    }
+
+    /** Recharge le résevoir du robot en respectant ses caractéristiques
+     * @param carte :carte sur lequel le robot s'exécute */
+    public void rechargerReservoir(ArrayList&lt;Case&gt;  watertiles,Carte carte, Simulateur sim) throws RobotIllegalPosException {
+<span class="nc" id="L37">        int verifEau=0;</span>
+
+        //Vérifie qu'il y a bien une case eau autours de lui, sinon lève une exception
+        try{
+<span class="nc bnc" id="L41" title="All 2 branches missed.">            if (carte.getVoisin(this.getPosition(), Direction.NORD).getNature()==NatureTerrain.EAU){verifEau=1;}</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            else if (carte.getVoisin(this.getPosition(), Direction.SUD).getNature()==NatureTerrain.EAU){verifEau=1;}</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">            else if (carte.getVoisin(this.getPosition(), Direction.EST).getNature()==NatureTerrain.EAU){verifEau=1;}</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            else if (carte.getVoisin(this.getPosition(), Direction.OUEST).getNature()==NatureTerrain.EAU){verifEau=1;}</span>
+<span class="nc" id="L45">        } catch(CarteHorsCarteException e) {</span>
+<span class="nc" id="L46">            System.out.println(e);</span>
+<span class="nc" id="L47">        }</span>
+        
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (verifEau!=1){ //Lève une exception si aucune des 4 cases autours du robot n'est de l'eau</span>
+<span class="nc" id="L50">            throw new IndexOutOfBoundsException(&quot;Le robot n'est pas autorisé à remplir son réservoir sur cette case.\n&quot;);</span>
+        }
+
+        //Remplie le résevoir à la capacité maximale de ce type de robot = 2000L
+        try {
+<span class="nc" id="L55">            this.setReservoir(this.getCapaciteReservoir());</span>
+<span class="nc" id="L56">        } catch(RobotIllegalVolException e) {</span>
+<span class="nc" id="L57">            System.out.println(e);</span>
+<span class="nc" id="L58">        }</span>
+        
+<span class="nc" id="L60">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

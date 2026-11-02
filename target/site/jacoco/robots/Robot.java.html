@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Robot.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">projet-java-poo</a> &gt; <a href="index.source.html" class="el_package">robots</a> &gt; <span class="el_source">Robot.java</span></div><h1>Robot.java</h1><pre class="source lang-java linenums">package robots;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Objects;
+
+import map.*;
+//import simulation.Evenement;
+import exceptions.*;
+import simulation.*;
+
+
+public abstract class Robot{
+    private String type;
+    private Etat state;
+    private double vitesse_max;       // Vitesse de déplacement max du robot (km/h)
+    private double vitesse_de_base ;  // Vitesse de déplacement du robot lue dans le fichier (km/h)
+    private int capacite_reservoir;   // Capacité max du reservoir (en L)
+    private int temps_recharge;       // Temps pour recharger completement le reservoir (s)
+    private int temps_decharge;       // Temps qu'il faut pour verser la quantité d'eau pour une extinction (en s)
+    private int decremente_reservoir; // Quantité déversée pour une extinction (en L)
+    private int etat_reservoir;       // Etat actuel du reservoir entre 0 et capacité reservoir (en L)
+    private Case position;            // Position courante du robot
+    private Case focusArea;           // Position du feu sur lequel il est focus en ce moment (destination du trajet qu'il effectue en ce moment, ou case actuelle s'il ne bouge pas actuellement)
+
+    private NatureTerrain terrainsAcc[];
+
+
+<span class="fc" id="L29">    public Robot(String type,Etat state,double vitesse_max,double vitesse_de_base, int capacite_reservoir,int temps_recharge,int decremente_reservoir,int temps_decharge,int etat_reservoir,Case position,NatureTerrain terrainsAcc[]){</span>
+<span class="fc" id="L30">        this.type = type;</span>
+<span class="fc" id="L31">        this.state = state;</span>
+<span class="fc" id="L32">        this.vitesse_max = vitesse_max;</span>
+<span class="fc" id="L33">        this.vitesse_de_base = vitesse_de_base;</span>
+<span class="fc" id="L34">        this.capacite_reservoir = capacite_reservoir;</span>
+<span class="fc" id="L35">        this.temps_recharge = temps_recharge;</span>
+<span class="fc" id="L36">        this.decremente_reservoir = decremente_reservoir;</span>
+<span class="fc" id="L37">        this.temps_decharge = temps_decharge;</span>
+<span class="fc" id="L38">        this.etat_reservoir = etat_reservoir;</span>
+<span class="fc" id="L39">        this.position = position;</span>
+<span class="fc" id="L40">        this.terrainsAcc = terrainsAcc;</span>
+<span class="fc" id="L41">        this.focusArea = null; // Aucune case focus par défaut</span>
+<span class="fc" id="L42">    }</span>
+
+    /////////// getter ///////////
+
+    /** Renvoie la vitesse maximum du robot*/
+    public String getType(){
+<span class="fc" id="L48">        return this.type;</span>
+    }
+
+    public Etat getEtat(){
+<span class="fc" id="L52">        return this.state;</span>
+    }
+    /** Renvoie la vitesse maximum du robot*/
+    public double getVitesseMax(){
+<span class="fc" id="L56">        return this.vitesse_max;</span>
+    }
+
+    /** Renvoie la vitesse du robot lue dans le fichier de données*/
+    public double getVitesseBase(){
+<span class="fc" id="L61">        return this.vitesse_de_base;</span>
+    }
+
+    /** Renvoie la Capacité du reservoir*/
+    public int getCapaciteReservoir(){
+<span class="fc" id="L66">        return this.capacite_reservoir;</span>
+    }
+
+    /** Renvoie le temps de rechargement du réservoir complet du Robot*/
+    public int getTempsRecharge(){
+<span class="fc" id="L71">        return this.temps_recharge;</span>
+    }
+
+    /** Renvoie la quantité déversée pour une extinction */
+    public int getDechargeReservoir(){
+<span class="fc" id="L76">        return this.decremente_reservoir;</span>
+    }
+
+    /** Renvoie le temps de dechargement du réservoir pour une opération unitaire de deversement*/
+    public int getTempsDecharge(){
+<span class="fc" id="L81">        return this.temps_decharge;</span>
+    }
+
+    /** Renvoie le volume d'eau dans le reservoir*/
+    public int getEtatReservoir(){
+<span class="fc" id="L86">        return this.etat_reservoir;</span>
+    }
+    
+    /** Renvoie la position du robot*/
+    public Case getPosition(){
+<span class="fc" id="L91">        return this.position;</span>
+    }
+
+    /** Renvoie la liste des terrains accessibles pour le robot*/
+    public NatureTerrain[] getTerrainAcc(){
+<span class="fc" id="L96">        return this.terrainsAcc;</span>
+    }
+
+    /** Renvoie la vitesse du robot sur le terrain &quot;&lt;br&gt; actu &lt;br&gt;&quot;
+    * @param actu position actuelle du robot
+    */
+    public abstract double getVitesse(NatureTerrain actu);
+
+    public Case getFocusArea() {
+<span class="nc" id="L105">        return this.focusArea;</span>
+    }
+
+    /////////// autre methodes ///////////
+
+
+    public void setEtat(Etat etat, Case focus){
+<span class="nc" id="L112">        this.state = etat;</span>
+<span class="nc" id="L113">        this.focusArea = focus;</span>
+<span class="nc" id="L114">    }</span>
+    /** methode pour dire si la case coordonnee est accessible au robot
+     * @param coordonnee :case a verifirer */
+    private boolean isTerrainAccessible(Case coordonnee) {
+<span class="fc" id="L118">        NatureTerrain terr[]= this.getTerrainAcc();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        for(int i =0 ; i&lt;terr.length; i++){</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            if (terr[i] == coordonnee.getNature()) {</span>
+<span class="fc" id="L121">                return true; </span>
+            }
+        }
+<span class="fc" id="L124">        return false; </span>
+    }
+
+    /** methode pour deplacer le robot sur la case coordonnee
+     * @param coordonnee :case ou deplacer le robot
+     * @exception RobotIllegalPosException Lève une exception RobotIllegalPosException si la case est inaccessible pour le robot */
+    public void setPosition(Case coordonnee)throws RobotIllegalPosException{
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (isTerrainAccessible(coordonnee)) {</span>
+<span class="fc" id="L132">            this.position = coordonnee;</span>
+        } else {
+<span class="fc" id="L134">            throw new RobotIllegalPosException(&quot;la case &quot;+coordonnee.toString()+&quot; n'est pas accessible pour le robot\n&quot;);</span>
+        }
+<span class="fc" id="L136">    }</span>
+
+    /** Réalise une opération unitaire de déversage (cf documentation pour le volume deduit du reservoir) et renvoie la quantité d'eau &lt;b&gt;déversée&lt;/b&gt;*/
+    public int deverserEau() {
+        try {
+<span class="fc" id="L141">            int etat_reservoir = this.getEtatReservoir();</span>
+<span class="fc" id="L142">            int decharge_reservoir = this.getDechargeReservoir();</span>
+            // On calcule le volume d'eau à déverser en fonction de l'état actuel du réservoir
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            int volume_deversement = (decharge_reservoir &lt; etat_reservoir) ? etat_reservoir - decharge_reservoir : etat_reservoir;</span>
+<span class="fc" id="L145">            this.setReservoir(volume_deversement); // On déverse finalement l'eau sur la case courante (attention: l'état d'un incendie présent sur cette case ne sera pas actulisé ici)</span>
+<span class="fc" id="L146">            return volume_deversement; // On oublie pas de renvoyer le volume d'eau déversé</span>
+<span class="nc" id="L147">        } catch(RobotIllegalVolException e) {</span>
+<span class="nc" id="L148">            System.out.println(e);</span>
+<span class="nc" id="L149">            return 0; // En cas d'erreur le robot n'a déversé aucun litre d'eau</span>
+        }
+    }
+
+    /** Méthode pour remplir le reservoir **/
+    public  abstract void rechargerReservoir(ArrayList&lt;Case&gt;  watertiles,Carte carte,Simulateur sim)throws RobotIllegalPosException;
+    
+    /** Méthode pour déduire la quantité vol du réservoir
+     * @param vol Volume à déduire du réservoir
+     * @exception RobotIllegalVolException Lève une exception RobotIllegalVolException si le volume &lt;br&gt;vol&lt;br&gt; est superieure au volume actuel du reservoir ou si le volume est negatif */
+    public void setReservoir(int vol)throws RobotIllegalVolException{
+<span class="fc bfc" id="L160" title="All 4 branches covered.">        if(vol &gt; this.etat_reservoir || vol&lt;0) throw new RobotIllegalVolException(&quot;le volume &quot;+ vol + &quot;est superieur à la capacité du reservoir  ou negatif!\n&quot;);</span>
+
+<span class="fc" id="L162">        this.etat_reservoir = vol;</span>
+<span class="fc" id="L163">    }</span>
+
+    
+    //Plus court Chemin//
+
+    static final double INF = Double.POSITIVE_INFINITY;
+
+    public Chemin dijkstra(Carte carte, Case fin) {
+<span class="nc" id="L171">        double[][] graph = matrice_adj(carte);</span>
+<span class="nc" id="L172">        int source =  this.position.getLigne() * carte.getNbColonnes() + this.position.getColonne();</span>
+<span class="nc" id="L173">        int destination = fin.getLigne() * carte.getNbColonnes() + fin.getColonne();</span>
+<span class="nc" id="L174">        int n = graph.length;</span>
+<span class="nc" id="L175">        double[] distance = new double[n];</span>
+<span class="nc" id="L176">        boolean[] visited = new boolean[n];</span>
+<span class="nc" id="L177">        int[] previous = new int[n];  // Pour garder une trace du chemin</span>
+
+<span class="nc" id="L179">        Arrays.fill(distance, INF);</span>
+<span class="nc" id="L180">        Arrays.fill(previous, -1);</span>
+<span class="nc" id="L181">        distance[source] = 0;</span>
+
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        for (int count = 0; count &lt; n - 1; count++) {</span>
+<span class="nc" id="L184">            int u = minDistance(distance, visited);</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">            if (u == -1) break; // Aucun nœud accessible restant</span>
+<span class="nc" id="L186">            visited[u] = true;</span>
+
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            for (int v = 0; v &lt; n; v++) {</span>
+<span class="nc bnc" id="L189" title="All 8 branches missed.">                if (!visited[v] &amp;&amp; graph[u][v] != INF &amp;&amp; distance[u] != INF &amp;&amp;</span>
+                        distance[u] + graph[u][v] &lt; distance[v]) {
+<span class="nc" id="L191">                    distance[v] = distance[u] + graph[u][v];</span>
+<span class="nc" id="L192">                    previous[v] = u;  // Enregistrer le prédécesseur pour le chemin</span>
+                }
+            }
+        }
+<span class="nc" id="L196">        Chemin chemin = makechemin(carte,buildPath(previous, source, destination),graph);</span>
+<span class="nc" id="L197">        return chemin;</span>
+    }
+    private double[][] matrice_adj(Carte carte){
+<span class="nc" id="L200">        int col= carte.getNbColonnes();</span>
+<span class="nc" id="L201">        int lig = carte.getNbLignes();</span>
+<span class="nc" id="L202">        double[][] graph = new double[col*lig][col*lig];</span>
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        for (int i = 0; i &lt; col * lig; i++) {</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">            for (int j = 0; j &lt; col * lig; j++) {</span>
+<span class="nc" id="L206">                graph[i][j] = Double.POSITIVE_INFINITY;</span>
+            }
+        }
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        for(int i = 0; i&lt; col; i++){</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">            for(int k= 0; k&lt;lig; k++){</span>
+                
+<span class="nc" id="L212">                try { Case current = carte.getCase(i, k);</span>
+<span class="nc" id="L213">                int nodeIndex = i * col + k;</span>
+
+<span class="nc" id="L215">                Case[] voisins = new Case[4];</span>
+<span class="nc" id="L216">                try { voisins[0] = carte.getVoisin(current, Direction.NORD); } catch(CarteHorsCarteException e) { voisins[0] = null; }</span>
+<span class="nc" id="L217">                try { voisins[1] = carte.getVoisin(current, Direction.SUD); } catch(CarteHorsCarteException e) { voisins[1] = null; }</span>
+<span class="nc" id="L218">                try { voisins[2] = carte.getVoisin(current, Direction.EST); } catch(CarteHorsCarteException e) { voisins[2] = null; }</span>
+<span class="nc" id="L219">                try { voisins[3] = carte.getVoisin(current, Direction.OUEST); } catch(CarteHorsCarteException e) { voisins[3] = null; }</span>
+    
+<span class="nc bnc" id="L221" title="All 2 branches missed.">                for (int p = 0; p &lt; 4; p++) { </span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">                    if (voisins[p] != null) {</span>
+<span class="nc" id="L223">                        int neighborIndex = voisins[p].getLigne() * col + voisins[p].getColonne();</span>
+<span class="nc" id="L224">                        double vitesse1 = this.getVitesse(voisins[p].getNature());</span>
+<span class="nc" id="L225">                        double vitesse2 = this.getVitesse(current.getNature());</span>
+<span class="nc" id="L226">                        double tempsDeplacement = (carte.getTailleCases()/(2*vitesse1)) + (carte.getTailleCases()/(2*vitesse2));</span>
+<span class="nc" id="L227">                        graph[nodeIndex][neighborIndex] = tempsDeplacement;</span>
+<span class="nc" id="L228">                        graph[neighborIndex][nodeIndex] = tempsDeplacement;</span>
+                    }
+                }
+
+<span class="nc" id="L232">            } catch (CarteHorsCarteException e) {}</span>
+        }
+    
+    }
+<span class="nc" id="L236">    return graph;</span>
+    }
+
+    private static int minDistance(double[] distance, boolean[] visited) {
+<span class="nc" id="L240">        double min = INF;</span>
+<span class="nc" id="L241">        int minIndex = -1;</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        for (int v = 0; v &lt; distance.length; v++) {</span>
+<span class="nc bnc" id="L243" title="All 4 branches missed.">            if (!visited[v] &amp;&amp; distance[v] &lt;= min) {</span>
+<span class="nc" id="L244">                min = distance[v];</span>
+<span class="nc" id="L245">                minIndex = v;</span>
+            }
+        }
+<span class="nc" id="L248">        return minIndex;</span>
+    }
+
+
+    private static ArrayList&lt;Integer&gt; buildPath(int[] previous, int source, int destination) {
+<span class="nc" id="L253">        ArrayList&lt;Integer&gt; path = new ArrayList&lt;&gt;();</span>
+        
+        // On part de la destination et on remonte jusqu'à la source
+<span class="nc bnc" id="L256" title="All 2 branches missed.">        for (int at = destination; at != -1; at = previous[at]) {</span>
+<span class="nc" id="L257">            path.add(at);</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">            if (at == source) break;</span>
+        }
+        
+        // Si le dernier élément ajouté n'est pas la source, cela signifie qu'il n'y a pas de chemin
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        if (path.get(path.size() - 1) != source) {</span>
+<span class="nc" id="L263">            System.out.println(&quot;No path found&quot;);</span>
+<span class="nc" id="L264">            return new ArrayList&lt;&gt;(); // Retourne un chemin vide si aucun chemin trouvé</span>
+        }
+        
+        // Inverser la liste pour obtenir le chemin dans le bon ordre (de source à destination)
+<span class="nc" id="L268">        Collections.reverse(path);</span>
+<span class="nc" id="L269">        return path;</span>
+    }
+
+    private Chemin makechemin(Carte carte, ArrayList&lt;Integer&gt; path, double[][] graph) {
+<span class="nc" id="L273">        ArrayList&lt;Case&gt; route = new ArrayList&lt;&gt;(); </span>
+<span class="nc" id="L274">        ArrayList&lt;Long&gt; temps = new ArrayList&lt;&gt;(); </span>
+<span class="nc" id="L275">        long tempsTotal = 0;</span>
+    
+<span class="nc bnc" id="L277" title="All 2 branches missed.">        for (int k = 0; k &lt; path.size(); k++) {</span>
+<span class="nc" id="L278">            int node = path.get(k);</span>
+<span class="nc" id="L279">            int i = node / carte.getNbColonnes();</span>
+<span class="nc" id="L280">            int j = node % carte.getNbColonnes();</span>
+    
+            try {
+<span class="nc" id="L283">                route.add(carte.getCase(i, j));</span>
+                
+                // Ajouter le temps de trajet cumulé pour atteindre la case actuelle
+<span class="nc bnc" id="L286" title="All 2 branches missed.">                if (k &gt; 0) {  // Ignorer le premier élément car il n'a pas de précédent</span>
+<span class="nc" id="L287">                    int prevNode = path.get(k - 1);</span>
+<span class="nc" id="L288">                    double tempsDeplacement = graph[prevNode][node];</span>
+<span class="nc" id="L289">                    tempsTotal += Math.floor(tempsDeplacement);  // Accumuler le temps de déplacement</span>
+<span class="nc" id="L290">                    temps.add(tempsTotal);  // Ajouter le temps cumulé à la liste</span>
+<span class="nc" id="L291">                } else {</span>
+<span class="nc" id="L292">                    temps.add(tempsTotal);  // Ajouter 0 pour la première case</span>
+                }
+<span class="nc" id="L294">            } catch (Exception e) {</span>
+<span class="nc" id="L295">                System.out.println(&quot;Erreur lors de l'accès à la case (&quot; + i + &quot;, &quot; + j + &quot;): &quot; + e.getMessage());</span>
+<span class="nc" id="L296">            }</span>
+        }
+<span class="nc" id="L298">        route.remove(0);</span>
+        // Créer et retourner un objet Chemin avec la route, les temps de trajet, et le temps total
+<span class="nc" id="L300">        Chemin chemin = new Chemin(route, temps, route.size(), tempsTotal);</span>
+<span class="nc" id="L301">        return chemin;</span>
+    }
+
+    public void mkevent(Incendie incendie, Chemin chem, Simulateur sim){
+<span class="nc bnc" id="L305" title="All 4 branches missed.">        if (!chem.getChemin().isEmpty() &amp;&amp; !chem.getDates().isEmpty()) {</span>
+        
+<span class="nc bnc" id="L307" title="All 2 branches missed.">        while(chem.getChemin().size() !=0){</span>
+<span class="nc" id="L308">            Case actuelle = chem.getChemin().remove(0);</span>
+<span class="nc" id="L309">            long date = chem.getDates().remove(0);</span>
+<span class="nc" id="L310">            DeplacerRobotEvenement e = new DeplacerRobotEvenement(this, actuelle, sim.getDateSimulation() + date);</span>
+<span class="nc" id="L311">            sim.addEvenement(e);</span>
+<span class="nc" id="L312">        } </span>
+<span class="nc" id="L313">        DeverserEauRobotEvenement deverser = new DeverserEauRobotEvenement(this, sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge(), sim.getDonneesSimulation(),sim);</span>
+<span class="nc" id="L314">        sim.addEvenement(deverser);</span>
+<span class="nc" id="L315">        ChangerStatutRobotEvenement etat = new ChangerStatutRobotEvenement(this, Etat.LIBRE, incendie.getPosition(), sim.getDateSimulation() + chem.getTempsTrajet() +this.getTempsDecharge()+10,sim);</span>
+<span class="nc" id="L316">        sim.addEvenement(etat);</span>
+        }
+<span class="nc" id="L318">    }</span>
+
+    @Override public String toString() {
+<span class="nc" id="L321">        return &quot;Je suis un robot de type &quot;+this.type+&quot; et mon identifiant est &quot;+this;</span>
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+<span class="nc" id="L326">        return Objects.hash(this.type.hashCode(), this.state.hashCode(), this.vitesse_max, this.vitesse_de_base, this.capacite_reservoir, this.temps_decharge, this.temps_decharge, this.decremente_reservoir, this.etat_reservoir, this.position.hashCode(), this.focusArea.hashCode());</span>
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

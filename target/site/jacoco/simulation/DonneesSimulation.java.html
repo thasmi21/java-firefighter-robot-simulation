@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DonneesSimulation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">projet-java-poo</a> &gt; <a href="index.source.html" class="el_package">simulation</a> &gt; <span class="el_source">DonneesSimulation.java</span></div><h1>DonneesSimulation.java</h1><pre class="source lang-java linenums">package simulation;
+import gui.GUISimulator;
+import gui.ImageElement;
+//import gui.Rectangle;
+import gui.Text;
+import map.Carte;
+import map.Case;
+import map.Incendie;
+import map.NatureTerrain;
+import robots.Robot;
+import gui.Oval;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+
+import exceptions.CarteHorsCarteException;
+
+public class DonneesSimulation {
+    private Carte carte;
+    private ArrayList&lt;Robot&gt; robots;
+    private HashMap&lt;Case, Incendie&gt; incendies;
+    private ArrayList&lt;Case&gt; watertiles;
+
+<span class="nc" id="L25">    public DonneesSimulation(Carte carte, HashMap&lt;Case, Incendie&gt; incendies, ArrayList&lt;Robot&gt; robots,ArrayList&lt;Case&gt; watertiles) {</span>
+<span class="nc" id="L26">        this.carte = carte;</span>
+<span class="nc" id="L27">        this.robots = robots;</span>
+<span class="nc" id="L28">        this.incendies = incendies;</span>
+<span class="nc" id="L29">        this.watertiles = remplirWaterTile();</span>
+<span class="nc" id="L30">    }       </span>
+    
+    private ArrayList&lt;Case&gt; remplirWaterTile(){
+<span class="nc" id="L33">        ArrayList&lt;Case&gt; waterTile = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        for(int i = 0; i&lt;carte.getNbColonnes(); i++){ </span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">            for(int k =0; k&lt; carte.getNbLignes(); k++){</span>
+                try {
+<span class="nc" id="L37">                    Case currentCase = carte.getCase(i, k);</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">                    if (currentCase.equalsEAU()) {</span>
+<span class="nc" id="L39">                        waterTile.add(currentCase);</span>
+                    }
+<span class="nc" id="L41">                    } catch (Exception e) {}</span>
+            }
+        }
+<span class="nc" id="L44">        return waterTile;</span>
+    }
+
+    /** Retourne l'ensemble des cases constituées d'eau de la simulation */
+    public ArrayList&lt;Case&gt; getWaterTiles() {
+<span class="nc" id="L49">        return this.watertiles;</span>
+    }
+
+    /** Renvoie la carte courante de la simulation */
+    public Carte getCarte() {
+<span class="nc" id="L54">        return this.carte;</span>
+    }
+
+
+    /** Renvoie l'ensemble des robots de la simulation */
+    public ArrayList&lt;Robot&gt; getRobots() {
+<span class="nc" id="L60">        return this.robots;</span>
+    }
+
+    /** Renvoie l'ensemble des incendies de la carte sous la forme d'une HashMap où les clées sont les cases et les valeurs les incendies */
+    public HashMap&lt;Case, Incendie&gt; getIncendies() {
+<span class="nc" id="L65">        return this.incendies;</span>
+    }
+
+    /** Renvoie l'incendie à la case c (ou null si il n'y a pas d'incendie à cette case) 
+     * @param c case où se trouve potentiellement l'incendie à récupérer
+    */
+    public Incendie getIncendieByCase(Case c) {
+<span class="nc" id="L72">        return this.incendies.get(c);</span>
+    }
+
+    /** Permet de retirer un incendie de la simulation */
+    public void removeIncendieByCase(Case c){
+<span class="nc" id="L77">        this.incendies.remove(c);</span>
+<span class="nc" id="L78">    }</span>
+
+    /** Permet d'ajouter un incendie à la simulation */
+    public void putIncendie(Incendie incendie){
+<span class="nc" id="L82">        this.incendies.put(incendie.getPosition(), incendie);</span>
+<span class="nc" id="L83">    }</span>
+
+    /**
+     * Affiche la carte et les éléments de la simulation sur l'interface graphique.
+     * @param gui L'interface graphique utilisée pour l'affichage.
+    */
+    public void afficherCarte(GUISimulator gui) {
+<span class="nc" id="L90">        gui.reset(); // Supprime les anciens éléments</span>
+
+        // Dessin de la carte
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        for (int i = 0; i &lt; carte.getNbLignes(); i++) {</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            for (int j = 0; j &lt; carte.getNbColonnes(); j++) {</span>
+                try{
+<span class="nc" id="L96">                Case c = carte.getCase(i, j);</span>
+<span class="nc" id="L97">                String image = obtenirCouleurNature(c.getNature());</span>
+
+<span class="nc" id="L99">                gui.addGraphicalElement(new ImageElement(j * 30 , i * 30,image,30,30,null));</span>
+                }
+<span class="nc" id="L101">                catch(CarteHorsCarteException e){</span>
+<span class="nc" id="L102">                    System.err.println(&quot;erreur depassement création care donneesimulation&quot;);</span>
+<span class="nc" id="L103">                }</span>
+            }
+        }
+
+        // Dessin des incendies
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        for(Case c : incendies.keySet()){</span>
+<span class="nc" id="L109">            Incendie i = incendies.get(c);</span>
+<span class="nc" id="L110">            int x = i.getPosition().getColonne() * 30 +15 ;</span>
+<span class="nc" id="L111">            int y = i.getPosition().getLigne() * 30 +15 ;</span>
+<span class="nc" id="L112">            gui.addGraphicalElement(new Oval(x, y, Color.RED, Color.ORANGE, 20));</span>
+<span class="nc" id="L113">            gui.addGraphicalElement(new Text(x, y - 10, Color.BLACK, Integer.toString(i.getVolExtinction())));</span>
+<span class="nc" id="L114">        }</span>
+
+        // Dessin des robots
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        for (Robot robot : robots) {</span>
+<span class="nc" id="L118">            int x = robot.getPosition().getColonne() * 30 +15 ;</span>
+<span class="nc" id="L119">            int y = robot.getPosition().getLigne() * 30 +15;</span>
+<span class="nc" id="L120">            gui.addGraphicalElement(new Oval(x, y, Color.BLUE, Color.CYAN, 20));</span>
+<span class="nc" id="L121">            gui.addGraphicalElement(new Text(x, y + 10, Color.BLACK, robot.getType()));</span>
+<span class="nc" id="L122">        }</span>
+<span class="nc" id="L123">    }</span>
+
+    /**
+     * Obtenir la couleur pour chaque type de terrain.
+     */
+    private String  obtenirCouleurNature(NatureTerrain nature) {
+<span class="nc bnc" id="L129" title="All 6 branches missed.">        switch (nature) {</span>
+<span class="nc" id="L130">            case FORET: return &quot;tiles/FORET.png&quot;;</span>
+<span class="nc" id="L131">            case EAU: return &quot;tiles/EAU.png&quot;;</span>
+<span class="nc" id="L132">            case ROCHE: return &quot;tiles/ROCHE.png&quot;;</span>
+<span class="nc" id="L133">            case TERRAIN_LIBRE: return &quot;tiles/TERRAIN_LIBRE.png&quot;;</span>
+<span class="nc" id="L134">            case HABITAT :return &quot;tiles/HABITAT.png&quot;;</span>
+<span class="nc" id="L135">            default: return &quot;tiles/TERRAIN_LIBRE.png&quot;;</span>
+        }
+    }
+
+    @Override public String toString() {
+<span class="nc" id="L140">        return &quot;Données de simulation contenant 1 carte, &quot;+this.robots.size()+&quot; robots, &quot;+this.incendies.size()+&quot; incendies et &quot;+this.watertiles.size()+&quot; cases d'eau.&quot;;</span>
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+<span class="nc" id="L145">        return Objects.hash(this.carte.hashCode(), this.robots.hashCode(), this.incendies.hashCode(), this.watertiles.hashCode());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

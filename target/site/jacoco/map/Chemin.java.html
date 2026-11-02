@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Chemin.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">projet-java-poo</a> &gt; <a href="index.source.html" class="el_package">map</a> &gt; <span class="el_source">Chemin.java</span></div><h1>Chemin.java</h1><pre class="source lang-java linenums">package map;
+import java.util.ArrayList;
+import java.util.Objects;
+
+/**
+ * Cette classe &lt;b&gt;définit les chemins&lt;/b&gt; en associant le déplacement d'un robot sur une case avec un système de date permettant 
+ * l'implémentation d'une notion de chronologie dans le traitement des incendies.
+ */
+
+public class Chemin{
+
+    private  ArrayList&lt;Case&gt; chemin; //Tableau des cases que le robot doit parcourir pour arriver à l'incendie visé
+    private  ArrayList&lt;Long&gt; dates; //Tableau des dates dindice i auxquelles le robot va passer sur la case de même indice
+    private int longueurChemin; //Nombre de cases à parcourir 
+    private long tempsTrajet; //Calcul du temps de trajet en prenant en compte la nature des terrains à franchir et les restrictions du robot concerné
+
+<span class="fc" id="L17">    public Chemin(ArrayList&lt;Case&gt; chemin,  ArrayList&lt;Long&gt; dates, int longueurChemin, long tempsTrajet){</span>
+<span class="fc" id="L18">        this.chemin = chemin;</span>
+<span class="fc" id="L19">        this.dates = dates;</span>
+<span class="fc" id="L20">        this.longueurChemin = longueurChemin;</span>
+<span class="fc" id="L21">        this.tempsTrajet = tempsTrajet;</span>
+<span class="fc" id="L22">    }</span>
+
+
+    /* GETTERS **/
+
+    public ArrayList&lt;Case&gt; getChemin(){
+<span class="fc" id="L28">        return this.chemin;</span>
+    }
+
+    public ArrayList&lt;Long&gt;  getDates(){
+<span class="fc" id="L32">        return this.dates;</span>
+    }
+
+    public int getlongueurChemin(){
+<span class="fc" id="L36">        return this.longueurChemin;</span>
+    }
+
+    public long getTempsTrajet(){
+<span class="fc" id="L40">        return this.tempsTrajet;</span>
+    }
+
+    /* SETTERS **/
+
+    public void addCase(Case Case) {
+<span class="fc" id="L46">        this.chemin.add(Case);</span>
+<span class="fc" id="L47">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L51">        String sb = &quot;&quot;;</span>
+<span class="fc" id="L52">        String tm = &quot;&quot;;</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (int i = 0; i &lt; this.chemin.size(); i++) {</span>
+<span class="fc" id="L54">            sb = sb + &quot;etape &quot; + i +&quot; case &quot; + this.chemin.get(i) + &quot;\n&quot;;</span>
+        }
+
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (int k = 0; k &lt; this.chemin.size(); k++) {</span>
+<span class="fc" id="L58">            sb = sb + &quot;etape &quot; + k+&quot; temps &quot; + this.dates.get(k) + &quot;\n&quot;;</span>
+        }
+       
+<span class="fc" id="L61">        sb = sb + &quot;longueurChemin = &quot; + this.longueurChemin +&quot;et le temps total &quot; + this.tempsTrajet + &quot;\n&quot;;</span>
+
+<span class="fc" id="L63">        return (sb + tm).toString();</span>
+    }
+
+    /** Génère un code de hashage pour une instance de la classe */
+    @Override public int hashCode() {
+<span class="nc" id="L68">        return Objects.hash(this.chemin.hashCode(), this.dates.hashCode(), this.longueurChemin, this.tempsTrajet);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

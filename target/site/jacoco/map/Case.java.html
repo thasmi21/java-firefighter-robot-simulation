@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Case.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">projet-java-poo</a> &gt; <a href="index.source.html" class="el_package">map</a> &gt; <span class="el_source">Case.java</span></div><h1>Case.java</h1><pre class="source lang-java linenums">package map;
+
+import java.util.Objects;
+
+public class Case{
+    private int ligne;
+    private int colonne;
+    private NatureTerrain nature;
+
+<span class="fc" id="L10">    public Case(int ligne, int colonne, NatureTerrain nature){</span>
+<span class="fc" id="L11">        this.ligne = ligne;</span>
+<span class="fc" id="L12">        this.colonne = colonne;</span>
+<span class="fc" id="L13">        this.nature = nature;</span>
+<span class="fc" id="L14">    }</span>
+
+    public int getLigne(){
+<span class="fc" id="L17">        return this.ligne;</span>
+    }
+    public int getColonne(){
+<span class="fc" id="L20">        return this.colonne;</span>
+    }
+    public NatureTerrain getNature(){
+<span class="fc" id="L23">        return this.nature;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L28">        return &quot;[col : &quot;  + this.colonne + &quot; lig : &quot; + this.ligne + &quot;]&quot; ;</span>
+    }
+
+    public boolean equalsEAU() {
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        return this.nature == NatureTerrain.EAU;</span>
+
+    }
+    @Override
+    public boolean equals(Object obj) {
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (this == obj) return true; // Vérifie si c'est le même objet en mémoire</span>
+<span class="pc bpc" id="L38" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) return false; // Vérifie le type de l'objet</span>
+<span class="fc" id="L39">        Case other = (Case) obj; </span>
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">        return this.ligne == other.ligne &amp;&amp; this.colonne == other.colonne; // Compare les attributs `lig` et `col`</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L45">        return Objects.hash(ligne, colonne); // Génère un code de hachage basé sur `lig` et `col`</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
